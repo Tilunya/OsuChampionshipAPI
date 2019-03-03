@@ -191,7 +191,18 @@ public class User {
 		this._playCount = json.getLong(UserEnum.PLAY_COUNT.getName());
 		this._rankedScore = json.getLong(UserEnum.RANKED_SCORE.getName());
 		this._totalScore = json.getLong(UserEnum.TOTAL_SCORE.getName());
-		
+		this._ppRank = json.getLong(UserEnum.PP_RANK.getName());
+		this._level = json.getDouble(UserEnum.LEVEL.getName());
+		this._ppRaw = json.getDouble(UserEnum.PP_RAW.getName());
+		this._accuracy = json.getDouble(UserEnum.ACCURACY.getName());
+		this._countRankSS = json.getLong(UserEnum.COUNT_RANK_SS.getName());
+		this._countRankSSH = json.getLong(UserEnum.COUNT_RANK_SSH.getName());
+		this._countRankS = json.getLong(UserEnum.COUNT_RANK_S.getName());
+		this._countRankSH = json.getLong(UserEnum.COUNT_RANK_SH.getName());
+		this._countRankA = json.getLong(UserEnum.COUNT_RANK_A.getName());
+		this._country = CountryCode.getByCode(UserEnum.COUNTRY.getName());
+		this._totalSecondPlayed = json.getLong(UserEnum.TOTAL_SECONDS_PLAYED.getName());
+		this._ppCountryRank = json.getLong(UserEnum.PP_COUNTRY_RANK.getName());
 	}
 
 }

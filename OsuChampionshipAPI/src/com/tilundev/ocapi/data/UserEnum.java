@@ -21,7 +21,8 @@ public enum UserEnum {
 	COUNT_RANK_A("count_rank_a"),
 	COUNTRY("country"),
 	TOTAL_SECONDS_PLAYED("total_seconds_played"),
-	PP_COUNTRY_RANK("pp_country_rank");
+	PP_COUNTRY_RANK("pp_country_rank"),
+	EVENTS("events");
 	
 	private String name;
 	
