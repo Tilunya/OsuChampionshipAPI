@@ -295,33 +295,33 @@ public class Beatmap {
 	 * @throws NoModFoundException 
 	 */
 	public Beatmap(JSONObject json) throws BadJSONDateFormatException, JSONException, NoApprouvedFoundException, NoGenreFoundException, NoLanguageFoundException, NoModFoundException {
-		this._approuved = ApprouvedEnum.getEnum(json.getInt(GetBeatmapEnum.APPROVED.getName()));
-		this._approuvedDate = DateUtil.parseDate(json.getString(GetBeatmapEnum.APPROVED_DATE.getName()));
-		this._lastUpdate = DateUtil.parseDate(json.getString(GetBeatmapEnum.LAST_UPDATE.getName()));
-		this._artist = json.getString(GetBeatmapEnum.ARTIST.getName());
-		this._beatmapId = json.getLong(GetBeatmapEnum.BEATMAP_ID.getName());
-		this._beatmapsetId = json.getLong(GetBeatmapEnum.BEATMAPSET_ID.getName());
-		this._bpm = json.getInt(GetBeatmapEnum.BPM.getName());
-		this._creator = json.getString(GetBeatmapEnum.CREATOR.getName());
-		this._creatorId = json.getLong(GetBeatmapEnum.CREATOR_ID.getName());
-		this._difficultyRating = json.getDouble(GetBeatmapEnum.DIFFICULTY_RATING.getName());
-		this._difficultyCircleSize = json.getDouble(GetBeatmapEnum.DIFF_SIZE.getName());
-		this._difficultyOverall = json.getDouble(GetBeatmapEnum.DIFF_OVERALL.getName());
-		this._difficultyHealthDrain = json.getDouble(GetBeatmapEnum.DIFF_DRAIN.getName());
-		this._hitLength = json.getLong(GetBeatmapEnum.HIT_LENGTH.getName());
-		this._source = json.getString(GetBeatmapEnum.SOURCE.getName());
-		this._genre = GenreEnum.getEnum(json.getInt(GetBeatmapEnum.GENRE_ID.getName()));
-		this._Language = LanguageEnum.getEnum(json.getInt(GetBeatmapEnum.LANGUAGE_ID.getName()));
-		this._title = json.getString(GetBeatmapEnum.TITLE.getName());
-		this._totalLength = json.getLong(GetBeatmapEnum.TOTAL_LENGTH.getName());
-		this._difficultyName = json.getString(GetBeatmapEnum.VERSION.getName());
-		this._fileMd5 = json.getString(GetBeatmapEnum.FILE_MD5.getName());
-		this._gameMode = ModEnum.getEnum(json.getInt(GetBeatmapEnum.MODE.getName()));
-		this._tags = StringUtil.split(json.getString(GetBeatmapEnum.TAGS.getName()), " ");
-		this._favoriteCount = json.getLong(GetBeatmapEnum.FAVOURITE_COUNTS.getName());
-		this._playCount = json.getLong(GetBeatmapEnum.PLAYCOUNT.getName());
-		this._passCount =  json.getLong(GetBeatmapEnum.PASSCOUNT.getName());
-		this._maxCombo = json.getLong(GetBeatmapEnum.MAX_COMBO.getName());
+		this._approuved = ApprouvedEnum.getEnum(json.getInt(BeatmapEnum.APPROVED.getName()));
+		this._approuvedDate = DateUtil.parseDate(json.getString(BeatmapEnum.APPROVED_DATE.getName()));
+		this._lastUpdate = DateUtil.parseDate(json.getString(BeatmapEnum.LAST_UPDATE.getName()));
+		this._artist = json.getString(BeatmapEnum.ARTIST.getName());
+		this._beatmapId = json.getLong(BeatmapEnum.BEATMAP_ID.getName());
+		this._beatmapsetId = json.getLong(BeatmapEnum.BEATMAPSET_ID.getName());
+		this._bpm = json.getInt(BeatmapEnum.BPM.getName());
+		this._creator = json.getString(BeatmapEnum.CREATOR.getName());
+		this._creatorId = json.getLong(BeatmapEnum.CREATOR_ID.getName());
+		this._difficultyRating = json.getDouble(BeatmapEnum.DIFFICULTY_RATING.getName());
+		this._difficultyCircleSize = json.getDouble(BeatmapEnum.DIFF_SIZE.getName());
+		this._difficultyOverall = json.getDouble(BeatmapEnum.DIFF_OVERALL.getName());
+		this._difficultyHealthDrain = json.getDouble(BeatmapEnum.DIFF_DRAIN.getName());
+		this._hitLength = json.getLong(BeatmapEnum.HIT_LENGTH.getName());
+		this._source = json.getString(BeatmapEnum.SOURCE.getName());
+		this._genre = GenreEnum.getEnum(json.getInt(BeatmapEnum.GENRE_ID.getName()));
+		this._Language = LanguageEnum.getEnum(json.getInt(BeatmapEnum.LANGUAGE_ID.getName()));
+		this._title = json.getString(BeatmapEnum.TITLE.getName());
+		this._totalLength = json.getLong(BeatmapEnum.TOTAL_LENGTH.getName());
+		this._difficultyName = json.getString(BeatmapEnum.VERSION.getName());
+		this._fileMd5 = json.getString(BeatmapEnum.FILE_MD5.getName());
+		this._gameMode = ModEnum.getEnum(json.getInt(BeatmapEnum.MODE.getName()));
+		this._tags = StringUtil.split(json.getString(BeatmapEnum.TAGS.getName()), " ");
+		this._favoriteCount = json.getLong(BeatmapEnum.FAVOURITE_COUNTS.getName());
+		this._playCount = json.getLong(BeatmapEnum.PLAYCOUNT.getName());
+		this._passCount =  json.getLong(BeatmapEnum.PASSCOUNT.getName());
+		this._maxCombo = json.getLong(BeatmapEnum.MAX_COMBO.getName());
 	}
 	
 	

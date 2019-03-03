@@ -4,7 +4,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.neovisionaries.i18n.CountryCode;
+import com.tilundev.ocapi.util.DateUtil;
+import com.tilundev.ocapi.utilexcept.BadJSONDateFormatException;
 
 public class User {
 	
@@ -176,5 +181,17 @@ public class User {
 	}
 	
 	
+	public User(JSONObject json) throws JSONException, BadJSONDateFormatException {
+		this._userId = json.getLong(UserEnum.USER_ID.getName());
+		this._username = json.getString(UserEnum.USERNAME.getName());
+		this._joinDate = DateUtil.parseDate(json.getString(UserEnum.JOIN_DATE.getName()));
+		this._count300 = json.getLong(UserEnum.COUNT300.getName());
+		this._count100 = json.getLong(UserEnum.COUNT100.getName());
+		this._count50 = json.getLong(UserEnum.COUNT50.getName());
+		this._playCount = json.getLong(UserEnum.PLAY_COUNT.getName());
+		this._rankedScore = json.getLong(UserEnum.RANKED_SCORE.getName());
+		this._totalScore = json.getLong(UserEnum.TOTAL_SCORE.getName());
+		
+	}
 
 }

@@ -1,6 +1,6 @@
 package com.tilundev.ocapi.data;
 
-public enum GetBeatmapEnum {
+public enum BeatmapEnum {
 	APPROVED("approved"),
 	APPROVED_DATE("approved_date"),
 	LAST_UPDATE("last_update"),
@@ -32,7 +32,7 @@ public enum GetBeatmapEnum {
 	
 	private String name;
 	
-	GetBeatmapEnum(String name) {
+	BeatmapEnum(String name) {
 		this.name = name;
 	}
 
