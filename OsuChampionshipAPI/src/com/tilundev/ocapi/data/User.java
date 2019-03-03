@@ -1,9 +1,11 @@
 package com.tilundev.ocapi.data;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -203,6 +205,11 @@ public class User {
 		this._country = CountryCode.getByCode(UserEnum.COUNTRY.getName());
 		this._totalSecondPlayed = json.getLong(UserEnum.TOTAL_SECONDS_PLAYED.getName());
 		this._ppCountryRank = json.getLong(UserEnum.PP_COUNTRY_RANK.getName());
+		this._eventsList = new ArrayList<Event>();
+		JSONArray eventArray = json.getJSONArray(UserEnum.EVENTS.getName());
+		for (int i = 0; i < eventArray.length(); i++) {
+			this._eventsList.add(new Event(eventArray.getJSONObject(i)));
+		}
 	}
 
 }
