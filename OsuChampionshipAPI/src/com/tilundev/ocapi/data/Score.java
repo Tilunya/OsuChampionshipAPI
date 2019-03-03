@@ -139,7 +139,11 @@ public class Score {
 		this._replayAvailable = _replayAvailable;
 	}
 	
-	
+	/**
+	 *  [FR] Ajouter une condition sur le replayAvailable pour ne pas faire de replay s'il n'existe pas (Appel BestPerf et RecentlyPlayed)
+	 * @param json
+	 * @throws BadJSONDateFormatException
+	 */
 	public Score(JSONObject json) throws BadJSONDateFormatException {
 		this._scoreId = json.getLong(ScoreEnum.SCORE_ID.getName());
 		this._score = json.getLong(ScoreEnum.SCORE.getName());
