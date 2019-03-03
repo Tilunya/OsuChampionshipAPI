@@ -1,13 +1,18 @@
 package com.tilundev.ocapi.data;
 
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.tilundev.ocapi.util.DateUtil;
+import com.tilundev.ocapi.util.StringUtil;
+import com.tilundev.ocapi.utilexcept.BadJSONDateFormatException;
 import com.tilundev.ocapi.utilexcept.NoApprouvedFoundException;
+import com.tilundev.ocapi.utilexcept.NoGenreFoundException;
+import com.tilundev.ocapi.utilexcept.NoLanguageFoundException;
+import com.tilundev.ocapi.utilexcept.NoModFoundException;
 
 public class Beatmap {
 	private ApprouvedEnum _approuved;
@@ -284,26 +289,39 @@ public class Beatmap {
 	 * @param json
 	 * @throws JSONException
 	 * @throws NoApprouvedFoundException
+	 * @throws BadJSONDateFormatException 
+	 * @throws NoGenreFoundException 
+	 * @throws NoLanguageFoundException 
+	 * @throws NoModFoundException 
 	 */
-	public Beatmap(JSONObject json) throws JSONException, NoApprouvedFoundException {
+	public Beatmap(JSONObject json) throws BadJSONDateFormatException, JSONException, NoApprouvedFoundException, NoGenreFoundException, NoLanguageFoundException, NoModFoundException {
 		this._approuved = ApprouvedEnum.getEnum(json.getInt(GetBeatmapEnum.APPROVED.getName()));
-		String date = json.getString(GetBeatmapEnum.APPROVED_DATE.getName());
-		//TODO [FR] déplacer cette partie dans le package util (Classe DateUtil)
-		String[] dateSep1 = date.split(" ");
-		GregorianCalendar cal = new GregorianCalendar();
-		boolean dateSuccess = false;
-		if(dateSep1.length == 2 ) {
-			String[] datejma = dateSep1[0].split("-");
-			String[] datehms = dateSep1[1].split(":");
-			if(datejma.length == 3 && datehms.length == 3) {
-				cal.set(Integer.parseInt(datejma[0]), Integer.parseInt(datejma[1]), Integer.parseInt(datejma[2]), Integer.parseInt(datehms[0]), Integer.parseInt(datehms[1]), Integer.parseInt(datehms[2]));
-				dateSuccess = true;
-			}
-		}
-		
-		if(dateSuccess) {
-			this._approuvedDate = cal.getTime();
-		}
+		this._approuvedDate = DateUtil.parseDate(json.getString(GetBeatmapEnum.APPROVED_DATE.getName()));
+		this._lastUpdate = DateUtil.parseDate(json.getString(GetBeatmapEnum.LAST_UPDATE.getName()));
+		this._artist = json.getString(GetBeatmapEnum.ARTIST.getName());
+		this._beatmapId = json.getLong(GetBeatmapEnum.BEATMAP_ID.getName());
+		this._beatmapsetId = json.getLong(GetBeatmapEnum.BEATMAPSET_ID.getName());
+		this._bpm = json.getInt(GetBeatmapEnum.BPM.getName());
+		this._creator = json.getString(GetBeatmapEnum.CREATOR.getName());
+		this._creatorId = json.getLong(GetBeatmapEnum.CREATOR_ID.getName());
+		this._difficultyRating = json.getDouble(GetBeatmapEnum.DIFFICULTY_RATING.getName());
+		this._difficultyCircleSize = json.getDouble(GetBeatmapEnum.DIFF_SIZE.getName());
+		this._difficultyOverall = json.getDouble(GetBeatmapEnum.DIFF_OVERALL.getName());
+		this._difficultyHealthDrain = json.getDouble(GetBeatmapEnum.DIFF_DRAIN.getName());
+		this._hitLength = json.getLong(GetBeatmapEnum.HIT_LENGTH.getName());
+		this._source = json.getString(GetBeatmapEnum.SOURCE.getName());
+		this._genre = GenreEnum.getEnum(json.getInt(GetBeatmapEnum.GENRE_ID.getName()));
+		this._Language = LanguageEnum.getEnum(json.getInt(GetBeatmapEnum.LANGUAGE_ID.getName()));
+		this._title = json.getString(GetBeatmapEnum.TITLE.getName());
+		this._totalLength = json.getLong(GetBeatmapEnum.TOTAL_LENGTH.getName());
+		this._difficultyName = json.getString(GetBeatmapEnum.VERSION.getName());
+		this._fileMd5 = json.getString(GetBeatmapEnum.FILE_MD5.getName());
+		this._gameMode = ModEnum.getEnum(json.getInt(GetBeatmapEnum.MODE.getName()));
+		this._tags = StringUtil.split(json.getString(GetBeatmapEnum.TAGS.getName()), " ");
+		this._favoriteCount = json.getLong(GetBeatmapEnum.FAVOURITE_COUNTS.getName());
+		this._playCount = json.getLong(GetBeatmapEnum.PLAYCOUNT.getName());
+		this._passCount =  json.getLong(GetBeatmapEnum.PASSCOUNT.getName());
+		this._maxCombo = json.getLong(GetBeatmapEnum.MAX_COMBO.getName());
 	}
 	
 	
