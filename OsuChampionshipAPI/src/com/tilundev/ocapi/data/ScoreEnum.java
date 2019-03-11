@@ -1,6 +1,7 @@
 package com.tilundev.ocapi.data;
 
 public enum ScoreEnum {
+	BEATMAP_ID("beatmap_id"),
 	SCORE_ID("score_id"),
 	SCORE("score"),
 	USERNAME("username"),

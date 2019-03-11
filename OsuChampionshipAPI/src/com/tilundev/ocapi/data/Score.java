@@ -164,5 +164,9 @@ public class Score {
 		this._replayAvailable = json.getInt(ScoreEnum.REPLAY_AVAILABLE.getName()) == 1 ? true : false;
 	}
 	
+	public Score() {
+		
+	}
+	
 
 }
