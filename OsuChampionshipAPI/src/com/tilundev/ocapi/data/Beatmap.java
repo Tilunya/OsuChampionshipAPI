@@ -285,7 +285,6 @@ public class Beatmap {
 	}
 	
 	/**
-	 * TODO [FR] première passe a changer
 	 * @param json
 	 * @throws JSONException
 	 * @throws NoApprouvedFoundException
