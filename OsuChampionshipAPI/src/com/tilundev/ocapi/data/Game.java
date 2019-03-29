@@ -1,8 +1,10 @@
 package com.tilundev.ocapi.data;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -23,7 +25,7 @@ public class Game {
 	private ScoringTypeEnum _scoringType;
 	private TeamTypeEnum _teamType;
 	private List<ModsEnum> _modsList;
-	private List<Score> _scoreList;
+	private List<ScoreMultiplayer> _scoreList;
 	
 	
 	public Long get_gameId() {
@@ -98,6 +100,12 @@ public class Game {
 		this._scoringType = ScoringTypeEnum.getEnum(json.getInt(GameEnum.SCORING_TYPE.getName()));
 		this._teamType = TeamTypeEnum.getEnum(json.getInt(GameEnum.TEAM_TYPE.getName()));
 		this._modsList = ModsUtil.parseMods(json.getLong(GameEnum.MODS.getName()));
+		JSONArray scoreArray = json.getJSONArray(GameEnum.SCORES.getName());
+		this._scoreList = new ArrayList<ScoreMultiplayer>();
+		for (int i = 0; i < scoreArray.length(); i++) {
+			JSONObject jsonScore = scoreArray.getJSONObject(i);
+			this._scoreList.add(new ScoreMultiplayer(jsonScore));
+		}
 	}
 	
 	
