@@ -2,7 +2,7 @@ package com.tilundev.ocapi.internal.request;
 
 public enum BeatmapRequestEnum {
 
-	GET_BEATMAP_REQUEST("/get_beatmaps",0);
+	GET_BEATMAP_REQUEST("/get_beatmaps",100);
 	
 	private String request;
 	private int id;

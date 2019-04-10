@@ -21,7 +21,7 @@ public class Beatmap {
 	private String _artist;
 	private Long _beatmapId;
 	private Long _beatmapsetId;
-	private int _bpm;
+	private Double _bpm;
 	private String _creator;
 	private Long _creatorId;
 	private Double _difficultyRating;
@@ -70,7 +70,7 @@ public class Beatmap {
 		return _beatmapsetId;
 	}
 
-	public int get_bpm() {
+	public Double get_bpm() {
 		return _bpm;
 	}
 
@@ -185,7 +185,7 @@ public class Beatmap {
 		this._beatmapsetId = _beatmapsetId;
 	}
 
-	public void set_bpm(int _bpm) {
+	public void set_bpm(Double _bpm) {
 		this._bpm = _bpm;
 	}
 
@@ -294,33 +294,34 @@ public class Beatmap {
 	 * @throws NoModFoundException 
 	 */
 	public Beatmap(JSONObject json) throws BadJSONDateFormatException, JSONException, NoApprouvedFoundException, NoGenreFoundException, NoLanguageFoundException, NoModFoundException {
-		this._approuved = ApprouvedEnum.getEnum(json.getInt(BeatmapEnum.APPROVED.getName()));
-		this._approuvedDate = DateUtil.parseDate(json.getString(BeatmapEnum.APPROVED_DATE.getName()));
-		this._lastUpdate = DateUtil.parseDate(json.getString(BeatmapEnum.LAST_UPDATE.getName()));
-		this._artist = json.getString(BeatmapEnum.ARTIST.getName());
-		this._beatmapId = json.getLong(BeatmapEnum.BEATMAP_ID.getName());
-		this._beatmapsetId = json.getLong(BeatmapEnum.BEATMAPSET_ID.getName());
-		this._bpm = json.getInt(BeatmapEnum.BPM.getName());
-		this._creator = json.getString(BeatmapEnum.CREATOR.getName());
-		this._creatorId = json.getLong(BeatmapEnum.CREATOR_ID.getName());
-		this._difficultyRating = json.getDouble(BeatmapEnum.DIFFICULTY_RATING.getName());
-		this._difficultyCircleSize = json.getDouble(BeatmapEnum.DIFF_SIZE.getName());
-		this._difficultyOverall = json.getDouble(BeatmapEnum.DIFF_OVERALL.getName());
-		this._difficultyHealthDrain = json.getDouble(BeatmapEnum.DIFF_DRAIN.getName());
-		this._hitLength = json.getLong(BeatmapEnum.HIT_LENGTH.getName());
-		this._source = json.getString(BeatmapEnum.SOURCE.getName());
-		this._genre = GenreEnum.getEnum(json.getInt(BeatmapEnum.GENRE_ID.getName()));
-		this._Language = LanguageEnum.getEnum(json.getInt(BeatmapEnum.LANGUAGE_ID.getName()));
-		this._title = json.getString(BeatmapEnum.TITLE.getName());
-		this._totalLength = json.getLong(BeatmapEnum.TOTAL_LENGTH.getName());
-		this._difficultyName = json.getString(BeatmapEnum.VERSION.getName());
-		this._fileMd5 = json.getString(BeatmapEnum.FILE_MD5.getName());
-		this._gameMode = ModEnum.getEnum(json.getInt(BeatmapEnum.MODE.getName()));
-		this._tags = StringUtil.split(json.getString(BeatmapEnum.TAGS.getName()), " ");
-		this._favoriteCount = json.getLong(BeatmapEnum.FAVOURITE_COUNTS.getName());
-		this._playCount = json.getLong(BeatmapEnum.PLAYCOUNT.getName());
-		this._passCount =  json.getLong(BeatmapEnum.PASSCOUNT.getName());
-		this._maxCombo = json.getLong(BeatmapEnum.MAX_COMBO.getName());
+
+		this._approuved = json.get(BeatmapEnum.APPROVED.getName()) != JSONObject.NULL ? ApprouvedEnum.getEnum(json.getInt(BeatmapEnum.APPROVED.getName())) : null;
+		this._approuvedDate = json.get(BeatmapEnum.APPROVED_DATE.getName()) != JSONObject.NULL ? DateUtil.parseDate(json.get(BeatmapEnum.APPROVED_DATE.getName())) : null;
+		this._lastUpdate = json.get(BeatmapEnum.LAST_UPDATE.getName()) != JSONObject.NULL ? DateUtil.parseDate(json.getString(BeatmapEnum.LAST_UPDATE.getName())) : null;
+		this._artist = json.get(BeatmapEnum.ARTIST.getName()) != JSONObject.NULL ? json.getString(BeatmapEnum.ARTIST.getName()) : null;
+		this._beatmapId = json.get(BeatmapEnum.BEATMAP_ID.getName()) != JSONObject.NULL ? json.getLong(BeatmapEnum.BEATMAP_ID.getName()) : null;
+		this._beatmapsetId = json.get(BeatmapEnum.BEATMAPSET_ID.getName()) != JSONObject.NULL ? json.getLong(BeatmapEnum.BEATMAPSET_ID.getName()) : null;
+		this._bpm = json.get(BeatmapEnum.BPM.getName()) != JSONObject.NULL ? json.getDouble(BeatmapEnum.BPM.getName()) : null;
+		this._creator = json.get(BeatmapEnum.CREATOR.getName()) != JSONObject.NULL ? json.getString(BeatmapEnum.CREATOR.getName()) : null;
+		this._creatorId = json.get(BeatmapEnum.CREATOR_ID.getName()) != JSONObject.NULL ? json.getLong(BeatmapEnum.CREATOR_ID.getName()) : null;
+		this._difficultyRating = json.get(BeatmapEnum.DIFFICULTY_RATING.getName()) != JSONObject.NULL ? json.getDouble(BeatmapEnum.DIFFICULTY_RATING.getName()) : null;
+		this._difficultyCircleSize = json.get(BeatmapEnum.DIFF_SIZE.getName()) != JSONObject.NULL ? json.getDouble(BeatmapEnum.DIFF_SIZE.getName()) : null;
+		this._difficultyOverall = json.get(BeatmapEnum.DIFF_OVERALL.getName()) != JSONObject.NULL ? json.getDouble(BeatmapEnum.DIFF_OVERALL.getName()) : null;
+		this._difficultyHealthDrain = json.get(BeatmapEnum.DIFF_DRAIN.getName()) != JSONObject.NULL ? json.getDouble(BeatmapEnum.DIFF_DRAIN.getName()) : null;
+		this._hitLength = json.get(BeatmapEnum.HIT_LENGTH.getName()) != JSONObject.NULL ? json.getLong(BeatmapEnum.HIT_LENGTH.getName()) : null;
+		this._source = json.get(BeatmapEnum.SOURCE.getName()) != JSONObject.NULL ? json.getString(BeatmapEnum.SOURCE.getName()) : null;
+		this._genre = json.get(BeatmapEnum.GENRE_ID.getName()) != JSONObject.NULL ? GenreEnum.getEnum(json.getInt(BeatmapEnum.GENRE_ID.getName())) : null;
+		this._Language = json.get(BeatmapEnum.LANGUAGE_ID.getName()) != JSONObject.NULL ? LanguageEnum.getEnum(json.getInt(BeatmapEnum.LANGUAGE_ID.getName())) : null;
+		this._title = json.get(BeatmapEnum.TITLE.getName()) != JSONObject.NULL ? json.getString(BeatmapEnum.TITLE.getName()) : null;
+		this._totalLength = json.get(BeatmapEnum.TOTAL_LENGTH.getName()) != JSONObject.NULL ? json.getLong(BeatmapEnum.TOTAL_LENGTH.getName()) : null;
+		this._difficultyName = json.get(BeatmapEnum.VERSION.getName()) != JSONObject.NULL ? json.getString(BeatmapEnum.VERSION.getName()) : null;
+		this._fileMd5 = json.get(BeatmapEnum.FILE_MD5.getName()) != JSONObject.NULL ? json.getString(BeatmapEnum.FILE_MD5.getName()) : null;
+		this._gameMode = json.get(BeatmapEnum.MODE.getName()) != JSONObject.NULL ? ModEnum.getEnum(json.getInt(BeatmapEnum.MODE.getName())) : null;
+		this._tags = json.get(BeatmapEnum.TAGS.getName()) != JSONObject.NULL ? StringUtil.split(json.getString(BeatmapEnum.TAGS.getName()), " ") : null;
+		this._favoriteCount = json.get(BeatmapEnum.FAVOURITE_COUNTS.getName()) != JSONObject.NULL ? json.getLong(BeatmapEnum.FAVOURITE_COUNTS.getName()) : null;
+		this._playCount = json.get(BeatmapEnum.PLAYCOUNT.getName()) != JSONObject.NULL ? json.getLong(BeatmapEnum.PLAYCOUNT.getName()) : null;
+		this._passCount =  json.get(BeatmapEnum.PASSCOUNT.getName()) != JSONObject.NULL ? json.getLong(BeatmapEnum.PASSCOUNT.getName()) : null;
+		this._maxCombo = json.get(BeatmapEnum.MAX_COMBO.getName()) != JSONObject.NULL ? json.getLong(BeatmapEnum.MAX_COMBO.getName()) : null;
 	}
 	
 	

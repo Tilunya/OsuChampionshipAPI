@@ -1,14 +1,18 @@
 package com.tilundev.ocapi.external;
 
-import java.sql.Date;
+import java.util.HashMap;
 import java.util.Map;
 
+import org.json.JSONArray;
+
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
 import com.tilundev.ocapi.external.parameters.BeatmapParametersEnum;
 import com.tilundev.ocapi.internal.Config;
 import com.tilundev.ocapi.internal.request.BeatmapRequestEnum;
 import com.tilundev.ocapi.util.DateUtil;
-import com.tilundev.ocapi.utilexcept.BadJSONDateFormatException;
 import com.tilundev.ocapi.utilexcept.BadRequestException;
 
 public class BeatmapRequest {
@@ -26,6 +30,7 @@ public class BeatmapRequest {
 	
 	private boolean _init = false;
 	private BeatmapRequestEnum _request;
+	private JsonNode _body = null;
 	
 	public BeatmapRequest() {
 		// TODO Auto-generated constructor stub
@@ -35,7 +40,6 @@ public class BeatmapRequest {
 	// Public methods
 	
 	public BeatmapRequest getBeatmapRequest() {
-		this.init(BeatmapRequestEnum.GET_BEATMAP_REQUEST);
 		return this;
 	}
 	
@@ -137,10 +141,33 @@ public class BeatmapRequest {
 	}
 	
 	public BeatmapRequest start() {
-		Unirest req = new Unirest();
+		this.init(BeatmapRequestEnum.GET_BEATMAP_REQUEST);
+		Map<String,Object> map = constructParameters();
+		String adress = Config.API_ADDRESS+BeatmapRequestEnum.GET_BEATMAP_REQUEST.getRequest();
+		try {
+			HttpResponse<JsonNode> res = Unirest.get(adress)
+					.queryString(map)
+					.asJson();
+			this._body = res.getBody(); 
+		} catch (UnirestException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return this;
 	}
 	
+	public JSONArray getBody() {
+		if(this._body == null) {
+			return null;
+		}
+		else {
+			if(this._body.isArray()) {
+				return this._body.getArray();
+			} else {
+				return null;
+			}
+		}
+	}
 	
 	// Private methods
 	
@@ -149,8 +176,44 @@ public class BeatmapRequest {
 		this._keyAPI = Config.getApiKey();
 		if(this._keyAPI == null || this._keyAPI.isEmpty()) {
 			//TODO Handle Error;
+			return;
 		}
 		this._init = true;
+	}
+	
+	private Map<String,Object> constructParameters(){
+		Map<String,Object> map = new HashMap<String,Object>();
+		if(!this._keyAPI.isEmpty()) {
+			map.put(BeatmapParametersEnum.API_KEY.getParamNaming(), this._keyAPI);
+		}
+		if(!this._sinceDate.isEmpty()) {
+			map.put(BeatmapParametersEnum.SINCE_DATE.getParamNaming(), this._sinceDate);
+		}
+		if(!this._beatmapHash.isEmpty()) {
+			map.put(BeatmapParametersEnum.BEATMAP_HASH.getParamNaming(), this._beatmapHash);
+		}
+		if(!this._beatmapID.isEmpty()) {
+			map.put(BeatmapParametersEnum.BEATMAP_ID.getParamNaming(), this._beatmapID);
+		}
+		if(!this._beatmapSetID.isEmpty()) {
+			map.put(BeatmapParametersEnum.BEATMAP_SET_ID.getParamNaming(), this._beatmapSetID);
+		}
+		if(!this._limit.isEmpty()) {
+			map.put(BeatmapParametersEnum.LIMIT_RESULT.getParamNaming(), this._limit);
+		}
+		if(!this._mode.isEmpty()) {
+			map.put(BeatmapParametersEnum.MODE.getParamNaming(), this._mode);
+		}
+		if(!this._modeConverter.isEmpty()) {
+			map.put(BeatmapParametersEnum.MODE_CONVERTER.getParamNaming(), this._modeConverter);
+		}
+		if(!this._typeUserID.isEmpty()) {
+			map.put(BeatmapParametersEnum.USER_TYPE_DATA.getParamNaming(), this._typeUserID);
+		}
+		if(!this._userID.isEmpty()) {
+			map.put(BeatmapParametersEnum.USER_ID.getParamNaming(), this._userID);
+		}
+		return map;
 	}
 	
 }

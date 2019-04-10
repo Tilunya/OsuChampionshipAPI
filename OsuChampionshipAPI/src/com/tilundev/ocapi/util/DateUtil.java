@@ -3,12 +3,19 @@ package com.tilundev.ocapi.util;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import org.json.JSONObject;
+
+import com.google.gson.JsonNull;
 import com.tilundev.ocapi.utilexcept.BadJSONDateFormatException;
 
 public class DateUtil {
 
-	public static Date parseDate(String date) throws BadJSONDateFormatException {
-		String[] dateSep1 = date.split(" ");
+	public static Date parseDate(Object date) throws BadJSONDateFormatException {
+		if(date == JSONObject.NULL) {
+			return null;
+		} 
+		String dateStr = date.toString();
+		String[] dateSep1 = dateStr.split(" ");
 		GregorianCalendar cal = new GregorianCalendar();
 		boolean dateSuccess = false;
 		if(dateSep1.length == 2 ) {
@@ -27,7 +34,7 @@ public class DateUtil {
 		if(dateSuccess) {
 			return cal.getTime();
 		} else {
-			throw new BadJSONDateFormatException("The date \"" + date +"\" is not well formed");
+			throw new BadJSONDateFormatException("The date \"" + dateStr +"\" is not well formed");
 		}
 	}
 	
