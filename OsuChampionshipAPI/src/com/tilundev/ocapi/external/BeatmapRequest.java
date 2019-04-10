@@ -11,11 +11,11 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.tilundev.ocapi.external.parameters.BeatmapParametersEnum;
 import com.tilundev.ocapi.internal.Config;
-import com.tilundev.ocapi.internal.request.BeatmapRequestEnum;
+import com.tilundev.ocapi.internal.request.RequestEnum;
 import com.tilundev.ocapi.util.DateUtil;
 import com.tilundev.ocapi.utilexcept.BadRequestException;
 
-public class BeatmapRequest {
+public class BeatmapRequest extends Request{
 
 	private String _keyAPI = ""; // Required
 	private String _sinceDate = ""; // YYYY-MM-JJ
@@ -29,7 +29,7 @@ public class BeatmapRequest {
 	private String _limit = "";
 	
 	private boolean _init = false;
-	private BeatmapRequestEnum _request;
+	private RequestEnum _request;
 	private JsonNode _body = null;
 	
 	public BeatmapRequest() {
@@ -141,9 +141,9 @@ public class BeatmapRequest {
 	}
 	
 	public BeatmapRequest start() {
-		this.init(BeatmapRequestEnum.GET_BEATMAP_REQUEST);
+		this.init(RequestEnum.GET_BEATMAP_REQUEST);
 		Map<String,Object> map = constructParameters();
-		String adress = Config.API_ADDRESS+BeatmapRequestEnum.GET_BEATMAP_REQUEST.getRequest();
+		String adress = Config.API_ADDRESS+RequestEnum.GET_BEATMAP_REQUEST.getRequest();
 		try {
 			HttpResponse<JsonNode> res = Unirest.get(adress)
 					.queryString(map)
@@ -156,6 +156,10 @@ public class BeatmapRequest {
 		return this;
 	}
 	
+	/**
+	 * TODO gèrer les exceptions
+	 * @return
+	 */
 	public JSONArray getBody() {
 		if(this._body == null) {
 			return null;
@@ -171,7 +175,7 @@ public class BeatmapRequest {
 	
 	// Private methods
 	
-	private void init(BeatmapRequestEnum bre) {
+	protected void init(RequestEnum bre) {
 		this._request = bre;
 		this._keyAPI = Config.getApiKey();
 		if(this._keyAPI == null || this._keyAPI.isEmpty()) {
@@ -181,7 +185,7 @@ public class BeatmapRequest {
 		this._init = true;
 	}
 	
-	private Map<String,Object> constructParameters(){
+	protected Map<String,Object> constructParameters(){
 		Map<String,Object> map = new HashMap<String,Object>();
 		if(!this._keyAPI.isEmpty()) {
 			map.put(BeatmapParametersEnum.API_KEY.getParamNaming(), this._keyAPI);

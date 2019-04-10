@@ -1,13 +1,13 @@
 package com.tilundev.ocapi.internal.request;
 
-public enum BeatmapRequestEnum {
+public enum RequestEnum {
 
 	GET_BEATMAP_REQUEST("/get_beatmaps",100);
 	
 	private String request;
 	private int id;
 	
-	private BeatmapRequestEnum(String request, int id) {
+	private RequestEnum(String request, int id) {
 		this.request = request;
 		this.id = id;
 	}
