@@ -145,23 +145,23 @@ public class Score {
 	 * @throws BadJSONDateFormatException
 	 */
 	public Score(JSONObject json) throws BadJSONDateFormatException {
-		this._scoreId = json.getLong(ScoreEnum.SCORE_ID.getName());
-		this._score = json.getLong(ScoreEnum.SCORE.getName());
-		this._username = json.getString(ScoreEnum.USERNAME.getName());
-		this._count300 = json.getInt(ScoreEnum.COUNT_300.getName());
-		this._count100 = json.getInt(ScoreEnum.COUNT_100.getName());
-		this._count50 = json.getInt(ScoreEnum.COUNT_50.getName());
-		this._countMiss = json.getInt(ScoreEnum.COUNT_MISS.getName());
-		this._maxCombo = json.getInt(ScoreEnum.MAX_COMBO.getName());
-		this._countKatu = json.getInt(ScoreEnum.COUNT_KATU.getName());
-		this._countGeki = json.getInt(ScoreEnum.COUNT_GEKI.getName());
-		this._perfect = json.getInt(ScoreEnum.PERFECT.getName()) == 1 ? true : false;
-		this._enabledMods = ModsUtil.parseMods(json.getLong(ScoreEnum.ENABLED_MODS.getName()));
-		this._userId = json.getLong(ScoreEnum.USER_ID.getName());
-		this._date = DateUtil.parseDate(ScoreEnum.DATE.getName());
-		this._rank = json.getString(ScoreEnum.RANK.getName());
-		this._pp = json.getDouble(ScoreEnum.PP.getName());
-		this._replayAvailable = json.getInt(ScoreEnum.REPLAY_AVAILABLE.getName()) == 1 ? true : false;
+		this._scoreId = json.get(ScoreEnum.SCORE_ID.getName()) != JSONObject.NULL ? json.getLong(ScoreEnum.SCORE_ID.getName()) : null;
+		this._score = json.get(ScoreEnum.SCORE.getName()) != JSONObject.NULL ? json.getLong(ScoreEnum.SCORE.getName()) : null;
+		this._username = json.get(ScoreEnum.USERNAME.getName()) != JSONObject.NULL ? json.getString(ScoreEnum.USERNAME.getName()) : null;
+		this._count300 = json.get(ScoreEnum.COUNT_300.getName()) != JSONObject.NULL ? json.getInt(ScoreEnum.COUNT_300.getName()) : null;
+		this._count100 = json.get(ScoreEnum.COUNT_100.getName()) != JSONObject.NULL ? json.getInt(ScoreEnum.COUNT_100.getName()) : null;
+		this._count50 = json.get(ScoreEnum.COUNT_50.getName()) != JSONObject.NULL ? json.getInt(ScoreEnum.COUNT_50.getName()) : null;
+		this._countMiss = json.get(ScoreEnum.COUNT_MISS.getName()) != JSONObject.NULL ? json.getInt(ScoreEnum.COUNT_MISS.getName()) : null;
+		this._maxCombo = json.get(ScoreEnum.MAX_COMBO.getName()) != JSONObject.NULL ? json.getInt(ScoreEnum.MAX_COMBO.getName()) : null;
+		this._countKatu = json.get(ScoreEnum.COUNT_KATU.getName()) != JSONObject.NULL ? json.getInt(ScoreEnum.COUNT_KATU.getName()) : null;
+		this._countGeki = json.get(ScoreEnum.COUNT_GEKI.getName()) != JSONObject.NULL ? json.getInt(ScoreEnum.COUNT_GEKI.getName()) : null;
+		this._perfect = json.get(ScoreEnum.PERFECT.getName()) != JSONObject.NULL ? (json.getInt(ScoreEnum.PERFECT.getName()) == 1 ? true : false) : null;
+		this._enabledMods = json.get(ScoreEnum.ENABLED_MODS.getName()) != JSONObject.NULL ? ModsUtil.parseMods(json.getLong(ScoreEnum.ENABLED_MODS.getName())) : null;
+		this._userId = json.get(ScoreEnum.USER_ID.getName()) != JSONObject.NULL ? json.getLong(ScoreEnum.USER_ID.getName()) : null;
+		this._date = json.get(ScoreEnum.DATE.getName()) != JSONObject.NULL ? DateUtil.parseDate(ScoreEnum.DATE.getName()) : null;
+		this._rank = json.get(ScoreEnum.RANK.getName()) != JSONObject.NULL ? json.getString(ScoreEnum.RANK.getName()) : null;
+		this._pp = json.get(ScoreEnum.PP.getName()) != JSONObject.NULL ? json.getDouble(ScoreEnum.PP.getName()) : null;
+		this._replayAvailable = json.get(ScoreEnum.REPLAY_AVAILABLE.getName()) != JSONObject.NULL ? (json.getInt(ScoreEnum.REPLAY_AVAILABLE.getName()) == 1 ? true : false)  : null;
 	}
 	
 	public Score() {

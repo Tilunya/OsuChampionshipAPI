@@ -91,20 +91,22 @@ public class Game {
 	}
 	
 	public Game(JSONObject json) throws JSONException, BadJSONDateFormatException, NoModFoundException, NoScoringTypeFoundException, NoTeamTypeFoundException {
-		this._gameId = json.getLong(GameEnum.GAME_ID.getName());
-		this._startTime = DateUtil.parseDate(json.getString(GameEnum.START_TIME.getName()));
-		this._endTime = DateUtil.parseDate(json.getString(GameEnum.END_TIME.getName()));
-		this._beatmapId = json.getLong(GameEnum.BEATMAP_ID.getName());
-		this._playMod = ModEnum.getEnum(json.getInt(GameEnum.PLAY_MODE.getName()));
-		this._matchType = json.getString(GameEnum.MATCH_TYPE.getName());
-		this._scoringType = ScoringTypeEnum.getEnum(json.getInt(GameEnum.SCORING_TYPE.getName()));
-		this._teamType = TeamTypeEnum.getEnum(json.getInt(GameEnum.TEAM_TYPE.getName()));
-		this._modsList = ModsUtil.parseMods(json.getLong(GameEnum.MODS.getName()));
-		JSONArray scoreArray = json.getJSONArray(GameEnum.SCORES.getName());
+		this._gameId = json.get(GameEnum.GAME_ID.getName()) != JSONObject.NULL ? json.getLong(GameEnum.GAME_ID.getName()) : null;
+		this._startTime = json.get(GameEnum.START_TIME.getName()) != JSONObject.NULL ? DateUtil.parseDate(json.getString(GameEnum.START_TIME.getName())) : null;
+		this._endTime = json.get(GameEnum.END_TIME.getName()) != JSONObject.NULL ? DateUtil.parseDate(json.getString(GameEnum.END_TIME.getName())) : null;
+		this._beatmapId = json.get(GameEnum.BEATMAP_ID.getName()) != JSONObject.NULL ? json.getLong(GameEnum.BEATMAP_ID.getName()) : null;
+		this._playMod = json.get(GameEnum.PLAY_MODE.getName()) != JSONObject.NULL ? ModEnum.getEnum(json.getInt(GameEnum.PLAY_MODE.getName())) : null;
+		this._matchType = json.get(GameEnum.MATCH_TYPE.getName()) != JSONObject.NULL ? json.getString(GameEnum.MATCH_TYPE.getName()) : null;
+		this._scoringType = json.get(GameEnum.SCORING_TYPE.getName()) != JSONObject.NULL ? ScoringTypeEnum.getEnum(json.getInt(GameEnum.SCORING_TYPE.getName())) : null;
+		this._teamType = json.get(GameEnum.TEAM_TYPE.getName()) != JSONObject.NULL ? TeamTypeEnum.getEnum(json.getInt(GameEnum.TEAM_TYPE.getName())) : null;
+		this._modsList = json.get(GameEnum.MODS.getName()) != JSONObject.NULL ? ModsUtil.parseMods(json.getLong(GameEnum.MODS.getName())) : null;
+		JSONArray scoreArray = json.get(GameEnum.SCORES.getName()) != JSONObject.NULL ? json.getJSONArray(GameEnum.SCORES.getName()) : null;
 		this._scoreList = new ArrayList<ScoreMultiplayer>();
-		for (int i = 0; i < scoreArray.length(); i++) {
-			JSONObject jsonScore = scoreArray.getJSONObject(i);
-			this._scoreList.add(new ScoreMultiplayer(jsonScore));
+		if(scoreArray != null) {
+			for (int i = 0; i < scoreArray.length(); i++) {
+				JSONObject jsonScore = scoreArray.getJSONObject(i);
+				this._scoreList.add(new ScoreMultiplayer(jsonScore));
+			}
 		}
 	}
 	

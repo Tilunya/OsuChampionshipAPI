@@ -3,7 +3,6 @@ package com.tilundev.ocapi.data;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -184,31 +183,33 @@ public class User {
 	
 	
 	public User(JSONObject json) throws JSONException, BadJSONDateFormatException {
-		this._userId = json.getLong(UserEnum.USER_ID.getName());
-		this._username = json.getString(UserEnum.USERNAME.getName());
-		this._joinDate = DateUtil.parseDate(json.getString(UserEnum.JOIN_DATE.getName()));
-		this._count300 = json.getLong(UserEnum.COUNT300.getName());
-		this._count100 = json.getLong(UserEnum.COUNT100.getName());
-		this._count50 = json.getLong(UserEnum.COUNT50.getName());
-		this._playCount = json.getLong(UserEnum.PLAY_COUNT.getName());
-		this._rankedScore = json.getLong(UserEnum.RANKED_SCORE.getName());
-		this._totalScore = json.getLong(UserEnum.TOTAL_SCORE.getName());
-		this._ppRank = json.getLong(UserEnum.PP_RANK.getName());
-		this._level = json.getDouble(UserEnum.LEVEL.getName());
-		this._ppRaw = json.getDouble(UserEnum.PP_RAW.getName());
-		this._accuracy = json.getDouble(UserEnum.ACCURACY.getName());
-		this._countRankSS = json.getLong(UserEnum.COUNT_RANK_SS.getName());
-		this._countRankSSH = json.getLong(UserEnum.COUNT_RANK_SSH.getName());
-		this._countRankS = json.getLong(UserEnum.COUNT_RANK_S.getName());
-		this._countRankSH = json.getLong(UserEnum.COUNT_RANK_SH.getName());
-		this._countRankA = json.getLong(UserEnum.COUNT_RANK_A.getName());
-		this._country = CountryCode.getByCode(UserEnum.COUNTRY.getName());
-		this._totalSecondPlayed = json.getLong(UserEnum.TOTAL_SECONDS_PLAYED.getName());
-		this._ppCountryRank = json.getLong(UserEnum.PP_COUNTRY_RANK.getName());
+		this._userId = json.get(UserEnum.USER_ID.getName()) != JSONObject.NULL ? json.getLong(UserEnum.USER_ID.getName()) : null;
+		this._username = json.get(UserEnum.USERNAME.getName()) != JSONObject.NULL ? json.getString(UserEnum.USERNAME.getName()) : null;
+		this._joinDate = json.get(UserEnum.JOIN_DATE.getName()) != JSONObject.NULL ? DateUtil.parseDate(json.getString(UserEnum.JOIN_DATE.getName())) : null;
+		this._count300 = json.get(UserEnum.COUNT300.getName()) != JSONObject.NULL ? json.getLong(UserEnum.COUNT300.getName()) : null;
+		this._count100 = json.get(UserEnum.COUNT100.getName()) != JSONObject.NULL ? json.getLong(UserEnum.COUNT100.getName()) : null;
+		this._count50 = json.get(UserEnum.COUNT50.getName()) != JSONObject.NULL ? json.getLong(UserEnum.COUNT50.getName()) : null;
+		this._playCount = json.get(UserEnum.PLAY_COUNT.getName()) != JSONObject.NULL ? json.getLong(UserEnum.PLAY_COUNT.getName()) : null;
+		this._rankedScore = json.get(UserEnum.RANKED_SCORE.getName()) != JSONObject.NULL ? json.getLong(UserEnum.RANKED_SCORE.getName()) : null;
+		this._totalScore = json.get(UserEnum.TOTAL_SCORE.getName()) != JSONObject.NULL ? json.getLong(UserEnum.TOTAL_SCORE.getName()) : null;
+		this._ppRank = json.get(UserEnum.PP_RANK.getName()) != JSONObject.NULL ? json.getLong(UserEnum.PP_RANK.getName()) : null;
+		this._level = json.get(UserEnum.LEVEL.getName()) != JSONObject.NULL ? json.getDouble(UserEnum.LEVEL.getName()) : null;
+		this._ppRaw = json.get(UserEnum.PP_RAW.getName()) != JSONObject.NULL ? json.getDouble(UserEnum.PP_RAW.getName()) : null;
+		this._accuracy = json.get(UserEnum.ACCURACY.getName()) != JSONObject.NULL ? json.getDouble(UserEnum.ACCURACY.getName()) : null;
+		this._countRankSS = json.get(UserEnum.COUNT_RANK_SS.getName()) != JSONObject.NULL ? json.getLong(UserEnum.COUNT_RANK_SS.getName()) : null;
+		this._countRankSSH = json.get(UserEnum.COUNT_RANK_SSH.getName()) != JSONObject.NULL ? json.getLong(UserEnum.COUNT_RANK_SSH.getName()) : null;
+		this._countRankS = json.get(UserEnum.COUNT_RANK_S.getName()) != JSONObject.NULL ? json.getLong(UserEnum.COUNT_RANK_S.getName()) : null;
+		this._countRankSH = json.get(UserEnum.COUNT_RANK_SH.getName()) != JSONObject.NULL ? json.getLong(UserEnum.COUNT_RANK_SH.getName()) : null;
+		this._countRankA = json.get(UserEnum.COUNT_RANK_A.getName()) != JSONObject.NULL ? json.getLong(UserEnum.COUNT_RANK_A.getName()) : null;
+		this._country = json.get(UserEnum.COUNTRY.getName()) != JSONObject.NULL ? CountryCode.getByCode(UserEnum.COUNTRY.getName()) : null;
+		this._totalSecondPlayed = json.get(UserEnum.TOTAL_SECONDS_PLAYED.getName()) != JSONObject.NULL ? json.getLong(UserEnum.TOTAL_SECONDS_PLAYED.getName()) : null;
+		this._ppCountryRank = json.get(UserEnum.PP_COUNTRY_RANK.getName()) != JSONObject.NULL ? json.getLong(UserEnum.PP_COUNTRY_RANK.getName()) : null;
 		this._eventsList = new ArrayList<Event>();
-		JSONArray eventArray = json.getJSONArray(UserEnum.EVENTS.getName());
-		for (int i = 0; i < eventArray.length(); i++) {
-			this._eventsList.add(new Event(eventArray.getJSONObject(i)));
+		JSONArray eventArray = json.get(UserEnum.EVENTS.getName()) != JSONObject.NULL ? json.getJSONArray(UserEnum.EVENTS.getName()) : null;
+		if(eventArray != null) {
+			for (int i = 0; i < eventArray.length(); i++) {
+				this._eventsList.add(new Event(eventArray.getJSONObject(i)));
+			}
 		}
 	}
 

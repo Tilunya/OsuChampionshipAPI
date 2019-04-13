@@ -54,11 +54,11 @@ public class Event {
 	
 	
 	public Event(JSONObject json) throws JSONException, BadJSONDateFormatException {
-		this._displayHTML = json.getString(EventEnum.DISPLAY_HTML.getName());
-		this._beatmapId = json.getLong(EventEnum.BEATMAP_ID.getName());
-		this._beatmapSetId = json.getLong(EventEnum.BEATMAPSET_ID.getName());
-		this._date = DateUtil.parseDate(json.getString(EventEnum.DATE.getName()));
-		this._epicFactor = json.getInt(EventEnum.EPIC_FACTOR.getName());
+		this._displayHTML = json.get(EventEnum.DISPLAY_HTML.getName()) != JSONObject.NULL ? json.getString(EventEnum.DISPLAY_HTML.getName()) : null;
+		this._beatmapId = json.get(EventEnum.BEATMAP_ID.getName()) != JSONObject.NULL ? json.getLong(EventEnum.BEATMAP_ID.getName()) : null;
+		this._beatmapSetId = json.get(EventEnum.BEATMAPSET_ID.getName()) != JSONObject.NULL ? json.getLong(EventEnum.BEATMAPSET_ID.getName()) : null;
+		this._date = json.get(EventEnum.DATE.getName()) != JSONObject.NULL ? DateUtil.parseDate(json.getString(EventEnum.DATE.getName())) : null;
+		this._epicFactor = json.get(EventEnum.EPIC_FACTOR.getName()) != JSONObject.NULL ? json.getInt(EventEnum.EPIC_FACTOR.getName()) : null;
 	}
 	
 }

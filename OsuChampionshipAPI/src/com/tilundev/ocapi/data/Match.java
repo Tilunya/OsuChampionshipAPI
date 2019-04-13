@@ -48,10 +48,10 @@ public class Match {
 	}
 	
 	public Match(JSONObject json) throws BadJSONDateFormatException {
-		this._matchId = json.getLong(MatchEnum.MATCH_ID.getName());
-		this._name = json.getString(MatchEnum.NAME.getName());
-		this._startTime = DateUtil.parseDate(json.getString(MatchEnum.START_TIME.getName()));
-		String endTime = json.getString(MatchEnum.END_TIME.getName());
+		this._matchId = json.get(MatchEnum.MATCH_ID.getName()) != JSONObject.NULL ? json.getLong(MatchEnum.MATCH_ID.getName()) : null;
+		this._name = json.get(MatchEnum.NAME.getName()) != JSONObject.NULL ? json.getString(MatchEnum.NAME.getName()) : null;
+		this._startTime = json.get(MatchEnum.START_TIME.getName()) != JSONObject.NULL ? DateUtil.parseDate(json.getString(MatchEnum.START_TIME.getName())) : null;
+		String endTime = json.get(MatchEnum.END_TIME.getName()) != JSONObject.NULL ? json.getString(MatchEnum.END_TIME.getName()) : null;
 		this._endTime = (endTime == null) ? null : DateUtil.parseDate(endTime); 
 	}
 }
