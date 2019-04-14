@@ -1,42 +1,44 @@
 package com.tilundev.ocapi.internal;
 
-import java.util.List;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Map;
 
 import com.tilundev.ocapi.data.Beatmap;
 import com.tilundev.ocapi.data.User;
 
 public class Cache {
-	private static List<User> userListCache;
-	private static List<Beatmap> beatmapListCache;
+	private static Map<User,Date> userListCache;
+	private static Map<Beatmap,Date> beatmapListCache;
 	
 	
-	public static List<User> getUserListCache() {
+	public static Map<User,Date> getUserListCache() {
 		return userListCache;
 	}
-	public static List<Beatmap> getBeatmapListCache() {
+	public static Map<Beatmap,Date> getBeatmapListCache() {
 		return beatmapListCache;
 	}
-	public static void setUserListCache(List<User> userListCache) {
+	public static void setUserListCache(Map<User,Date> userListCache) {
 		Cache.userListCache = userListCache;
 	}
-	public static void setBeatmapListCache(List<Beatmap> beatmapListCache) {
+	public static void setBeatmapListCache(Map<Beatmap,Date> beatmapListCache) {
 		Cache.beatmapListCache = beatmapListCache;
 	}
 	
 	public static void addUserInCache(User user) {
-		userListCache.add(user);
+		userListCache.put(user, new Date(System.currentTimeMillis()));
 	}
 	
 	public static void addBeatmapInCache(Beatmap beatmap) {
-		beatmapListCache.add(beatmap);
+		beatmapListCache.put(beatmap, new Date(System.currentTimeMillis()));
 	}
 	
 	public static boolean isUserContain(User user) {
-		return userListCache.stream().filter(u -> u.get_userId() == user.get_userId()).count() > 0 ? true : false;
+		return userListCache.keySet().stream().filter(u -> u.get_userId() == user.get_userId()).count() > 0 ? true : false;
 	}
 	
 	public static boolean isBeatmapContain(Beatmap beatmap) {
-		return beatmapListCache.stream().filter(b -> b.get_beatmapId() == beatmap.get_beatmapId()).count() > 0 ? true : false;
+		return beatmapListCache.keySet().stream().filter(b -> b.get_beatmapId() == beatmap.get_beatmapId()).count() > 0 ? true : false;
 	}
 	
 }

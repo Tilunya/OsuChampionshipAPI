@@ -17,13 +17,16 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 import com.tilundev.ocapi.data.Beatmap;
 import com.tilundev.ocapi.data.BeatmapEnum;
 import com.tilundev.ocapi.data.BestScore;
+import com.tilundev.ocapi.data.Game;
 import com.tilundev.ocapi.data.ModsEnum;
 import com.tilundev.ocapi.data.MultiplayerGame;
 import com.tilundev.ocapi.data.RecentScore;
 import com.tilundev.ocapi.data.ResultRequestData;
 import com.tilundev.ocapi.data.Score;
+import com.tilundev.ocapi.data.ScoreMultiplayer;
 import com.tilundev.ocapi.data.User;
 import com.tilundev.ocapi.external.parameters.RequestParametersEnum;
+import com.tilundev.ocapi.internal.Cache;
 import com.tilundev.ocapi.internal.Config;
 import com.tilundev.ocapi.internal.request.RequestEnum;
 import com.tilundev.ocapi.util.DateUtil;
@@ -460,6 +463,54 @@ public class Request {
 		});
 	}
 	
+	private void deepRequestGetMatch() {
+		Set<Long> userList = new HashSet<Long>();
+		Set<Long> beatmapList = new HashSet<Long>();
+		try {
+			constructMatchData(_body);
+			List<MultiplayerGame> mpList = this._requestData.get_multiplayerGamesList();
+			for (int i = 0; i < mpList.size(); i++) {
+				MultiplayerGame mp = mpList.get(i);
+				List<Game> gameList = mp.get_gameList();
+				for (int j = 0; j < gameList.size(); j++) {
+					Game g = gameList.get(j);
+					beatmapList.add(g.get_beatmapId());
+					List<ScoreMultiplayer> scoreList = g.get_scoreList();
+					for (int k = 0; k < scoreList.size(); k++) {
+						ScoreMultiplayer s = scoreList.get(k);
+						userList.add(s.get_userId());
+					}
+				}
+			}
+			userList.forEach(userID -> {
+				RequestEnum deepRequestEnum = RequestEnum.GET_USER;
+				try {
+					this.setParameter(RequestParametersEnum.USER_ID, userID.toString())
+					.setParameter(RequestParametersEnum.USER_TYPE_DATA, "id");
+					deepStart(deepRequestEnum);
+				} catch (BadInitException | NoRequiredParameterFoundException | BadRequestException e) {
+					// TODO Change This
+					e.printStackTrace();
+				}
+			});
+			beatmapList.forEach(beatmapID -> {
+				RequestEnum deepRequestEnum = RequestEnum.GET_BEATMAP;
+				try {
+					this.setParameter(RequestParametersEnum.BEATMAP_ID, beatmapID.toString());
+					deepStart(deepRequestEnum);
+				} catch (BadInitException | NoRequiredParameterFoundException | BadRequestException e) {
+					// TODO Change This
+					e.printStackTrace();
+				}
+			});
+			
+		} catch (JSONException | BadJSONDateFormatException | NoModFoundException | NoScoringTypeFoundException
+				| NoTeamTypeFoundException e) {
+			// TODO CHANGE THIS !!!
+			e.printStackTrace();
+		}
+	}
+	
 	private Request deepStart(RequestEnum re) throws BadInitException, NoRequiredParameterFoundException {
 		deepInit(re);
 		if(this._init) {
@@ -645,6 +696,16 @@ public class Request {
 			JSONObject json = jsonArr.getJSONObject(i);
 			if(json != null) {
 				this._requestData.get_beatmapsList().add(new Beatmap(json));
+			}
+		}
+	}
+	
+	private void constructDeepBeatmapData(JsonNode node) throws JSONException, BadJSONDateFormatException, NoApprouvedFoundException, NoGenreFoundException, NoLanguageFoundException, NoModFoundException {
+		JSONArray jsonArr = node.getArray();
+		for (int i = 0; i < jsonArr.length(); i++) {
+			JSONObject json = jsonArr.getJSONObject(i);
+			if(json != null) {
+				Cache.addBeatmapInCache(new Beatmap(json));
 			}
 		}
 	}

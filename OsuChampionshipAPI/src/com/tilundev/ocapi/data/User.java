@@ -212,5 +212,18 @@ public class User {
 			}
 		}
 	}
+	
+	public boolean equals(User user) {
+		return this._userId == user._userId;
+	}
+	
+	public boolean equals(Object user) {
+		if(user.getClass() == User.class) {
+			return equals((User)user);
+		} else {
+			return super.equals(user);
+		}
+		
+	}
 
 }
