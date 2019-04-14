@@ -2,11 +2,12 @@ package com.tilundev.ocapi.internal.request;
 
 public enum RequestEnum {
 
-	GET_BEATMAP_REQUEST("Get Beatmaps","/get_beatmaps",100),
+	GET_BEATMAP("Get Beatmaps","/get_beatmaps",100),
 	GET_USER("Get Users","/get_user",101),
 	GET_SCORE("Get Scores","/get_scores",102),
 	GET_USER_BEST("Get User Best","/get_user_best",103),
-	GET_USER_RECENT("Get User Recent","/get_user_recent",104);
+	GET_USER_RECENT("Get User Recent","/get_user_recent",104),
+	GET_MATCH("Get Match","/get_match",105);
 
 	private String name;
 	private String request;

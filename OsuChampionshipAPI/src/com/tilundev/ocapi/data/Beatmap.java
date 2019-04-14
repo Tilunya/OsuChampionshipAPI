@@ -43,6 +43,7 @@ public class Beatmap {
 	private Long _playCount;
 	private Long _passCount;
 	private Long _maxCombo;
+	private User _user;
 	
 	// GETTERS
 
@@ -158,6 +159,10 @@ public class Beatmap {
 		return _maxCombo;
 	}
 	
+	public User get_user() {
+		return _user;
+	}
+	
 	
 	// SETTERS
 	
@@ -271,6 +276,10 @@ public class Beatmap {
 
 	public void set_maxCombo(Long _maxCombo) {
 		this._maxCombo = _maxCombo;
+	}
+	
+	public void set_user(User _user) {
+		this._user = _user;
 	}
 
 	

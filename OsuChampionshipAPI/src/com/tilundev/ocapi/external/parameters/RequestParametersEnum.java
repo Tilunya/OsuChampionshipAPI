@@ -13,7 +13,9 @@ public enum RequestParametersEnum {
 	MODE_CONVERTER("Mode Converter","a"),
 	BEATMAP_HASH("Beatmap Hash","h"),
 	LIMIT_RESULT("Limit","limit"),
+	MATCH_ID("Match Id","mp"),
 	EVENT_DAYS("Event Days","event_days");
+	
 	
 	
 	private String name;

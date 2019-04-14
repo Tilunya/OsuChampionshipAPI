@@ -5,12 +5,15 @@ import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.mashape.unirest.http.JsonNode;
 import com.tilundev.ocapi.data.BestScore;
+import com.tilundev.ocapi.data.Game;
+import com.tilundev.ocapi.data.Match;
+import com.tilundev.ocapi.data.MultiplayerGame;
 import com.tilundev.ocapi.data.RecentScore;
-import com.tilundev.ocapi.data.Score;
-import com.tilundev.ocapi.data.User;
+import com.tilundev.ocapi.data.ResultRequestData;
 import com.tilundev.ocapi.external.parameters.RequestParametersEnum;
 import com.tilundev.ocapi.internal.Config;
 import com.tilundev.ocapi.internal.request.RequestEnum;
@@ -27,21 +30,23 @@ public class Test {
 		// TODO Auto-generated method stub
 		Config.initConfig();
 		Request br = new Request();
-		br.setRequest(RequestEnum.GET_USER_RECENT)
-			.setParameter(RequestParametersEnum.USER_TYPE_DATA, "id")
-			.setParameter(RequestParametersEnum.USER_ID, "4872279");
+		br.setRequest(RequestEnum.GET_MATCH)
+			.setParameter(RequestParametersEnum.MATCH_ID, "50963890");
 		try {
 			br.start();
-			JsonNode node = br.getBody();
-			JSONArray arr = node.getArray();
-			List<RecentScore> li = new ArrayList<RecentScore>();
-			System.out.println("Bonjour");
-			for (int i = 0; i < arr.length(); i++) {
-				li.add(new RecentScore(arr.getJSONObject(i)));
-			}
+			ResultRequestData rrd = br.getConstructData();
+			MultiplayerGame mpg = rrd.get_multiplayerGamesList().get(0);
+			Match m = mpg.get_match();
+			List<Game> li = mpg.get_gameList();
+			System.out.println("Room " + m.get_name() + " For " + li.size() + " Games");
 			for (int j = 0; j < li.size(); j++) {
-				BestScore s = li.get(j);
-				System.out.println(j+" : " + s.get_beatmap_id() + " - " + s.get_score() +" - " + s.get_rank());
+				Game g = li.get(j);
+				System.out.println("Beatmap Id :" + g.get_beatmapId() + " Start at : " + g.get_startTime().toString());
+				if(g.get_scoreList() != null) {
+					for (int i = 0; i < g.get_scoreList().size(); i++) {
+						System.out.println( (i+1) +" : " + g.get_scoreList().get(i).get_userId());
+					}
+				}
 			}
 		}
 		catch (Exception e) {

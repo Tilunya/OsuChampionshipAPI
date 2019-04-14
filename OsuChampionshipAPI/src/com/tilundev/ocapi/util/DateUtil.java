@@ -23,7 +23,7 @@ public class DateUtil {
 			String[] datehms = dateSep1[1].split(":");
 			if(datejma.length == 3 && datehms.length == 3) {
 				try {
-				cal.set(Integer.parseInt(datejma[0]), Integer.parseInt(datejma[1]), Integer.parseInt(datejma[2]), Integer.parseInt(datehms[0]), Integer.parseInt(datehms[1]), Integer.parseInt(datehms[2]));
+				cal.set(Integer.parseInt(datejma[0]), Integer.parseInt(datejma[1])-1, Integer.parseInt(datejma[2]), Integer.parseInt(datehms[0]), Integer.parseInt(datehms[1]), Integer.parseInt(datehms[2]));
 				dateSuccess = true;
 				} catch (Exception e) {
 					dateSuccess = false;

@@ -55,6 +55,9 @@ public class Game {
 	public List<ModsEnum> get_modsList() {
 		return _modsList;
 	}
+	public List<ScoreMultiplayer> get_scoreList() {
+		return _scoreList;
+	}
 	
 	
 	public void set_gameId(Long _gameId) {
@@ -83,6 +86,9 @@ public class Game {
 	}
 	public void set_modsList(List<ModsEnum> _modsList) {
 		this._modsList = _modsList;
+	}
+	public void set_scoreList(List<ScoreMultiplayer> _scoreList) {
+		this._scoreList = _scoreList;
 	}
 	
 	
