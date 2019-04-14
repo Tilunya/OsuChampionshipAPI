@@ -158,7 +158,7 @@ public class Score {
 		this._perfect = json.get(ScoreEnum.PERFECT.getName()) != JSONObject.NULL ? (json.getInt(ScoreEnum.PERFECT.getName()) == 1 ? true : false) : null;
 		this._enabledMods = json.get(ScoreEnum.ENABLED_MODS.getName()) != JSONObject.NULL ? ModsUtil.parseMods(json.getLong(ScoreEnum.ENABLED_MODS.getName())) : null;
 		this._userId = json.get(ScoreEnum.USER_ID.getName()) != JSONObject.NULL ? json.getLong(ScoreEnum.USER_ID.getName()) : null;
-		this._date = json.get(ScoreEnum.DATE.getName()) != JSONObject.NULL ? DateUtil.parseDate(ScoreEnum.DATE.getName()) : null;
+		this._date = json.get(ScoreEnum.DATE.getName()) != JSONObject.NULL ? DateUtil.parseDate(json.getString(ScoreEnum.DATE.getName())) : null;
 		this._rank = json.get(ScoreEnum.RANK.getName()) != JSONObject.NULL ? json.getString(ScoreEnum.RANK.getName()) : null;
 		this._pp = json.get(ScoreEnum.PP.getName()) != JSONObject.NULL ? json.getDouble(ScoreEnum.PP.getName()) : null;
 		this._replayAvailable = json.get(ScoreEnum.REPLAY_AVAILABLE.getName()) != JSONObject.NULL ? (json.getInt(ScoreEnum.REPLAY_AVAILABLE.getName()) == 1 ? true : false)  : null;

@@ -9,6 +9,7 @@ public enum RequestParametersEnum {
 	USER_ID("User ID","u"),
 	USER_TYPE_DATA("User data type","type"),
 	MODE("Mode","m"),
+	MODS("Mods","mods"),
 	MODE_CONVERTER("Mode Converter","a"),
 	BEATMAP_HASH("Beatmap Hash","h"),
 	LIMIT_RESULT("Limit","limit"),

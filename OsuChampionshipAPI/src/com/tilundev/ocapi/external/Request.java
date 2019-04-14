@@ -1,19 +1,20 @@
 package com.tilundev.ocapi.external;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-
-import org.json.JSONArray;
 
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import com.tilundev.ocapi.data.ModsEnum;
 import com.tilundev.ocapi.external.parameters.RequestParametersEnum;
 import com.tilundev.ocapi.internal.Config;
 import com.tilundev.ocapi.internal.request.RequestEnum;
 import com.tilundev.ocapi.util.DateUtil;
 import com.tilundev.ocapi.utilexcept.BadInitException;
+import com.tilundev.ocapi.utilexcept.BadJSONDateFormatException;
 import com.tilundev.ocapi.utilexcept.BadRequestException;
 import com.tilundev.ocapi.utilexcept.NoRequiredParameterFoundException;
 
@@ -30,6 +31,7 @@ public class Request {
 	private String _beatmapHash = null;
 	private String _limit = null;
 	private String _eventDays = null;
+	private String _mods = null;
 	
 	private boolean _init = false;
 	private RequestEnum _request = null;
@@ -46,8 +48,8 @@ public class Request {
 		return this;
 	}
 	
-	public Request setParameter(RequestParametersEnum requestParameterEnum, String value) {
-		switch (requestParameterEnum) {
+	public Request setParameter(RequestParametersEnum rpe, String value) throws BadRequestException {
+		switch (rpe) {
 		case BEATMAP_HASH:
 			this._beatmapHash = value;
 			break;
@@ -62,52 +64,78 @@ public class Request {
 			
 		case LIMIT_RESULT:
 			try {
-				int test = Integer.parseInt(value);
-				if(test >= 0 && test <=500) {
-					this._limit = value;
-				} else {
-					throw new BadRequestException("Wrong value for \""+ requestParameterEnum.getName() +"\" parameter. : " + value +" (500 max)");
+				switch (this._request) {
+				case GET_BEATMAP_REQUEST:
+					setLimitValue(500, value, rpe);
+					break;
+				case GET_USER:
+					setLimitValue(100, value, rpe);
+					break;
+				default:
+					if(this._request != null) {
+						throw new BadRequestException(rpe.getName() + " is not used in " + this._request.getName());
+					} else {
+						throw new BadRequestException("No Request Set");
+					}
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				throw new BadRequestException(e.getMessage());
 			}
 			break;
 			
 		case MODE:
 			try {
-				int test = Integer.parseInt(value);
-				if(test >= 0 && test <=3) {
-					this._mode = value;
-				} else {
-					throw new BadRequestException("Wrong value for \""+ requestParameterEnum.getName() +"\" parameter. : " + value);
+				switch (this._request) {
+				case GET_BEATMAP_REQUEST :
+				case GET_SCORE : 
+				case GET_USER :
+					setModeValue(value, rpe);
+					break;
+				default:
+					if(this._request != null) {
+						throw new BadRequestException(rpe.getName() + " is not used in " + this._request.getName());
+					} else {
+						throw new BadRequestException("No Request Set");
+					}
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				throw new BadRequestException(e.getMessage());
 			}
 			break;
 			
 		case MODE_CONVERTER:
 			try {
-				int test = Integer.parseInt(value);
-				if(test == 0 || test == 1) {
-					this._modeConverter = value;
-				} else {
-					throw new BadRequestException("Wrong value for \""+ requestParameterEnum.getName() +"\" parameter. : " + value);
+				switch (this._request) {
+				case GET_BEATMAP_REQUEST:
+					setModeConverterValue(value, rpe);
+					break;
+				default:
+					if(this._request != null) {
+						throw new BadRequestException(rpe.getName() + " is not used in " + this._request.getName());
+					} else {
+						throw new BadRequestException("No Request Set");
+					}
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				throw new BadRequestException(e.getMessage());
 			}
 			break;
 			
 		case SINCE_DATE:
 			try {
-				if(DateUtil.isDateCorrect(value)) {
-					this._sinceDate = value;
-				} else {
-					throw new BadRequestException("Wrong value for \""+ requestParameterEnum.getName() +"\" parameter. : " + value);
+				switch (this._request) {
+				case GET_BEATMAP_REQUEST:
+					setDateValue(value, rpe);
+					break;
+				default:
+					if(this._request != null) {
+						throw new BadRequestException(rpe.getName() + " is not used in " + this._request.getName());
+					} else {
+						throw new BadRequestException("No Request Set");
+					}
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				throw new BadRequestException(e.getMessage());
 			}
 			break;
 			
@@ -117,26 +145,55 @@ public class Request {
 			
 		case USER_TYPE_DATA:
 			try {
-				if(value.equals("string") || value.equals("id")) {
-					this._typeUserID = value;
-				} else {
-					throw new BadRequestException("Wrong value for \""+ requestParameterEnum.getName() +"\" parameter. : " + value + " Only \"string\" and \"id\" works");
+				switch (this._request) {
+				case GET_BEATMAP_REQUEST:
+				case GET_SCORE:
+				case GET_USER:
+					setUserTypeValue(value, rpe);
+					break;
+				default:
+					if(this._request != null) {
+						throw new BadRequestException(rpe.getName() + " is not used in " + this._request.getName());
+					} else {
+						throw new BadRequestException("No Request Set");
+					}
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				throw new BadRequestException(e.getMessage());
 			}
 			break;
 			
 		case EVENT_DAYS:
 			try {
-				int test = Integer.parseInt(value);
-				if(test >= 1 || test <= 31) {
-					this._modeConverter = value;
-				} else {
-					throw new BadRequestException("Wrong value for \""+ requestParameterEnum.getName() +"\" parameter. : " + value);
+				switch (this._request) {
+				case GET_USER:
+					setEventDaysValue(value, rpe);
+					break;
+				default:
+					if(this._request != null) {
+						throw new BadRequestException(rpe.getName() + " is not used in " + this._request.getName());
+					} else {
+						throw new BadRequestException("No Request Set");
+					}
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				throw new BadRequestException(e.getMessage());
+			}
+		case MODS:
+			try {
+				switch (this._request) {
+				case GET_USER:
+					setModsValue(value, rpe);
+					break;
+				default:
+					if(this._request != null) {
+						throw new BadRequestException(rpe.getName() + " is not used in " + this._request.getName());
+					} else {
+						throw new BadRequestException("No Request Set");
+					}
+				}
+			} catch (Exception e) {
+				throw new BadRequestException(e.getMessage());
 			}
 			
 		default:
@@ -148,10 +205,29 @@ public class Request {
 		
 	}
 	
-	public Request setParameters(Map<RequestParametersEnum,String> mapParameter) {
-		mapParameter.forEach((bpe,val)-> {
-			this.setParameter(bpe, val);
-		});
+	public Request setParameters(Map<RequestParametersEnum,String> mapParameter) throws BadRequestException {
+		try {
+			mapParameter.forEach((t, u) -> {
+				try {
+					setEachParameter(t, u);
+				} catch (BadRequestException e) {
+					throw new RuntimeException(e);
+				}
+			});
+		} catch (RuntimeException e) {
+			throw (BadRequestException) e.getCause();
+		}
+		return this;
+	}
+	
+
+	public Request setParameter(RequestParametersEnum rpe, List<ModsEnum> mods) throws BadRequestException {
+		int val = 0;
+		for (int i = 0; i < mods.size(); i++) {
+			val += mods.get(i).getId();
+		}
+		String value = Integer.toString(val);
+		this.setParameter(rpe, value);
 		return this;
 	}
 	
@@ -184,16 +260,12 @@ public class Request {
 		return this;
 	}
 
-	public JSONArray getBody() {
+	public JsonNode getBody() {
 		if(this._body == null) {
 			return null;
 		}
 		else {
-			if(this._body.isArray()) {
-				return this._body.getArray();
-			} else {
-				return null;
-			}
+			return this._body;
 		}
 	}
 	
@@ -215,8 +287,75 @@ public class Request {
 			return this._keyAPI != null;
 		case GET_USER:
 			return (this._keyAPI != null && this._userID != null);
+		case GET_SCORE:
+			return (this._keyAPI != null && this._beatmapID != null);
 		default:
 			return false;
+		}
+	}
+	
+	protected void setEachParameter(RequestParametersEnum rpe, String val) throws BadRequestException {
+		this.setParameter(rpe, val);
+	}
+	
+	protected void setLimitValue(int limit , String value, RequestParametersEnum rpe) throws BadRequestException, NumberFormatException {
+		int testUser = Integer.parseInt(value);
+		if(testUser >= 0 && testUser <=limit) {
+			this._limit = value;
+		} else {
+			throw new BadRequestException("Wrong value for \""+ rpe.getName() +"\" parameter. : " + value +" (100 max)");
+		}
+	}
+	
+	protected void setModeValue(String value, RequestParametersEnum rpe) throws BadRequestException, NumberFormatException {
+		int test = Integer.parseInt(value);
+		if(test >= 0 && test <=3) {
+			this._mode = value;
+		} else {
+			throw new BadRequestException("Wrong value for \""+ rpe.getName() +"\" parameter. : " + value);
+		}
+	}
+	
+	protected void setModeConverterValue(String value, RequestParametersEnum rpe) throws BadRequestException, NumberFormatException {
+		int test = Integer.parseInt(value);
+		if(test == 0 || test == 1) {
+			this._modeConverter = value;
+		} else {
+			throw new BadRequestException("Wrong value for \""+ rpe.getName() +"\" parameter. : " + value);
+		}
+	}
+	
+	protected void setDateValue(String value, RequestParametersEnum rpe) throws BadRequestException, BadJSONDateFormatException {
+		if(DateUtil.isDateCorrect(value)) {
+			this._sinceDate = value;
+		} else {
+			throw new BadRequestException("Wrong value for \""+ rpe.getName() +"\" parameter. : " + value);
+		}
+	}
+	
+	protected void setUserTypeValue(String value, RequestParametersEnum rpe) throws BadRequestException {
+		if(value.equals("string") || value.equals("id")) {
+			this._typeUserID = value;
+		} else {
+			throw new BadRequestException("Wrong value for \""+ rpe.getName() +"\" parameter. : " + value + " Only \"string\" and \"id\" works");
+		}
+	}
+	
+	protected void setEventDaysValue(String value, RequestParametersEnum rpe) throws BadRequestException, NumberFormatException {
+		int test = Integer.parseInt(value);
+		if(test >= 1 && test <= 31) {
+			this._modeConverter = value;
+		} else {
+			throw new BadRequestException("Wrong value for \""+ rpe.getName() +"\" parameter. : " + value);
+		}
+	}
+	
+	protected void setModsValue(String value, RequestParametersEnum rpe) throws BadRequestException, NumberFormatException {
+		int test = Integer.parseInt(value);
+		if(test >= 0) {
+			this._mods = value;
+		} else {
+			throw new BadRequestException("Wrong value for \""+ rpe.getName() +"\" parameter. : " + value);
 		}
 	}
 	
@@ -261,16 +400,40 @@ public class Request {
 				map.put(RequestParametersEnum.API_KEY.getParamNaming(), this._keyAPI);
 			}
 			if(this._userID != null && !this._userID.isEmpty()) {
-				map.put(RequestParametersEnum.API_KEY.getParamNaming(), this._userID);
+				map.put(RequestParametersEnum.USER_ID.getParamNaming(), this._userID);
 			}
 			if(this._mode != null && !this._mode.isEmpty()) {
-				map.put(RequestParametersEnum.API_KEY.getParamNaming(), this._mode);
+				map.put(RequestParametersEnum.MODE.getParamNaming(), this._mode);
 			}
 			if(this._typeUserID != null && !this._typeUserID.isEmpty()) {
-				map.put(RequestParametersEnum.API_KEY.getParamNaming(), this._typeUserID);
+				map.put(RequestParametersEnum.USER_TYPE_DATA.getParamNaming(), this._typeUserID);
 			}
 			if(this._eventDays != null && !this._eventDays.isEmpty()) {
-				map.put(RequestParametersEnum.API_KEY.getParamNaming(), this._eventDays);
+				map.put(RequestParametersEnum.EVENT_DAYS.getParamNaming(), this._eventDays);
+			}
+			return map;
+			
+		case GET_SCORE:
+			if(this._keyAPI != null && !this._keyAPI.isEmpty()) {
+				map.put(RequestParametersEnum.API_KEY.getParamNaming(), this._keyAPI);
+			}
+			if(this._beatmapID != null && !this._beatmapID.isEmpty()) {
+				map.put(RequestParametersEnum.BEATMAP_ID.getParamNaming(), this._beatmapID);
+			}
+			if(this._userID != null && !this._userID.isEmpty()) {
+				map.put(RequestParametersEnum.USER_ID.getParamNaming(), this._userID);
+			}
+			if(this._mode != null && !this._mode.isEmpty()) {
+				map.put(RequestParametersEnum.MODE.getParamNaming(), this._mode);
+			}
+			if(this._mods != null && !this._mods.isEmpty()) {
+				map.put(RequestParametersEnum.MODS.getParamNaming(), this._mods);
+			}
+			if(this._typeUserID != null && !this._typeUserID.isEmpty()) {
+				map.put(RequestParametersEnum.USER_TYPE_DATA.getParamNaming(), this._typeUserID);
+			}
+			if(this._limit != null && !this._limit.isEmpty()) {
+				map.put(RequestParametersEnum.LIMIT_RESULT.getParamNaming(), this._limit);
 			}
 			return map;
 
