@@ -7,6 +7,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import com.mashape.unirest.http.JsonNode;
+import com.tilundev.ocapi.data.BestScore;
+import com.tilundev.ocapi.data.RecentScore;
 import com.tilundev.ocapi.data.Score;
 import com.tilundev.ocapi.data.User;
 import com.tilundev.ocapi.external.parameters.RequestParametersEnum;
@@ -25,20 +27,21 @@ public class Test {
 		// TODO Auto-generated method stub
 		Config.initConfig();
 		Request br = new Request();
-		br.setRequest(RequestEnum.GET_SCORE)
-			.setParameter(RequestParametersEnum.BEATMAP_ID, "1839761");
+		br.setRequest(RequestEnum.GET_USER_RECENT)
+			.setParameter(RequestParametersEnum.USER_TYPE_DATA, "id")
+			.setParameter(RequestParametersEnum.USER_ID, "4872279");
 		try {
 			br.start();
 			JsonNode node = br.getBody();
 			JSONArray arr = node.getArray();
-			List<Score> li = new ArrayList<Score>();
+			List<RecentScore> li = new ArrayList<RecentScore>();
 			System.out.println("Bonjour");
 			for (int i = 0; i < arr.length(); i++) {
-				li.add(new Score(arr.getJSONObject(i)));
+				li.add(new RecentScore(arr.getJSONObject(i)));
 			}
 			for (int j = 0; j < li.size(); j++) {
-				Score s = li.get(j);
-				System.out.println(j+" : " + s.get_username() + " - " + s.get_score() +" - " + s.get_rank());
+				BestScore s = li.get(j);
+				System.out.println(j+" : " + s.get_beatmap_id() + " - " + s.get_score() +" - " + s.get_rank());
 			}
 		}
 		catch (Exception e) {

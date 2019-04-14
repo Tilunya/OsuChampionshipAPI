@@ -68,8 +68,12 @@ public class Request {
 				case GET_BEATMAP_REQUEST:
 					setLimitValue(500, value, rpe);
 					break;
-				case GET_USER:
+				case GET_SCORE:
+				case GET_USER_BEST:
 					setLimitValue(100, value, rpe);
+					break;
+				case GET_USER_RECENT:
+					setLimitValue(50, value, rpe);
 					break;
 				default:
 					if(this._request != null) {
@@ -89,6 +93,8 @@ public class Request {
 				case GET_BEATMAP_REQUEST :
 				case GET_SCORE : 
 				case GET_USER :
+				case GET_USER_BEST:
+				case GET_USER_RECENT:
 					setModeValue(value, rpe);
 					break;
 				default:
@@ -149,6 +155,8 @@ public class Request {
 				case GET_BEATMAP_REQUEST:
 				case GET_SCORE:
 				case GET_USER:
+				case GET_USER_BEST:
+				case GET_USER_RECENT:
 					setUserTypeValue(value, rpe);
 					break;
 				default:
@@ -286,6 +294,8 @@ public class Request {
 		case GET_BEATMAP_REQUEST:
 			return this._keyAPI != null;
 		case GET_USER:
+		case GET_USER_BEST:
+		case GET_USER_RECENT:
 			return (this._keyAPI != null && this._userID != null);
 		case GET_SCORE:
 			return (this._keyAPI != null && this._beatmapID != null);
@@ -434,6 +444,24 @@ public class Request {
 			}
 			if(this._limit != null && !this._limit.isEmpty()) {
 				map.put(RequestParametersEnum.LIMIT_RESULT.getParamNaming(), this._limit);
+			}
+			return map;
+		case GET_USER_BEST:
+		case GET_USER_RECENT:
+			if(this._keyAPI != null && !this._keyAPI.isEmpty()) {
+				map.put(RequestParametersEnum.API_KEY.getParamNaming(), this._keyAPI);
+			}
+			if(this._userID != null && !this._userID.isEmpty()) {
+				map.put(RequestParametersEnum.USER_ID.getParamNaming(), this._userID);
+			}
+			if(this._mode != null && !this._mode.isEmpty()) {
+				map.put(RequestParametersEnum.MODE.getParamNaming(), this._mode);
+			}
+			if(this._limit != null && !this._limit.isEmpty()) {
+				map.put(RequestParametersEnum.LIMIT_RESULT.getParamNaming(), this._limit);
+			}
+			if(this._typeUserID != null && !this._typeUserID.isEmpty()) {
+				map.put(RequestParametersEnum.USER_TYPE_DATA.getParamNaming(), this._typeUserID);
 			}
 			return map;
 

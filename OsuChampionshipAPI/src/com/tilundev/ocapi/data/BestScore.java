@@ -38,7 +38,7 @@ public class BestScore extends Score {
 		this.set_perfect(json.get(ScoreEnum.PERFECT.getName()) != JSONObject.NULL ? (json.getInt(ScoreEnum.PERFECT.getName()) == 1 ? true : false) : null);
 		this.set_enabledMods(json.get(ScoreEnum.ENABLED_MODS.getName()) != JSONObject.NULL ? ModsUtil.parseMods(json.getLong(ScoreEnum.ENABLED_MODS.getName())) : null);
 		this.set_userId(json.get(ScoreEnum.USER_ID.getName()) != JSONObject.NULL ? json.getLong(ScoreEnum.USER_ID.getName()) : null);
-		this.set_date(json.get(ScoreEnum.DATE.getName()) != JSONObject.NULL ? DateUtil.parseDate(ScoreEnum.DATE.getName()) : null);
+		this.set_date(json.get(ScoreEnum.DATE.getName()) != JSONObject.NULL ? DateUtil.parseDate(json.getString(ScoreEnum.DATE.getName())) : null);
 		this.set_rank(json.get(ScoreEnum.RANK.getName()) != JSONObject.NULL ? json.getString(ScoreEnum.RANK.getName()) : null);
 		this.set_pp(json.get(ScoreEnum.PP.getName()) != JSONObject.NULL ? json.getDouble(ScoreEnum.PP.getName()) : null);
 	}
