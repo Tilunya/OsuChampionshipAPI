@@ -1,6 +1,5 @@
 package com.tilundev.ocapi.internal;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 
@@ -34,11 +33,34 @@ public class Cache {
 	}
 	
 	public static boolean isUserContain(User user) {
-		return userListCache.keySet().stream().filter(u -> u.get_userId() == user.get_userId()).count() > 0 ? true : false;
+		return isUserContain(user.get_userId());
+	}
+	
+	public static boolean isUserContain(Long user) {
+		return userListCache.keySet().stream().filter(u -> u.get_userId() == user).count() > 0 ? true : false;
 	}
 	
 	public static boolean isBeatmapContain(Beatmap beatmap) {
-		return beatmapListCache.keySet().stream().filter(b -> b.get_beatmapId() == beatmap.get_beatmapId()).count() > 0 ? true : false;
+		return isBeatmapContain(beatmap.get_beatmapId());
 	}
 	
+	public static boolean isBeatmapContain(Long beatmap) {
+		return beatmapListCache.keySet().stream().filter(b -> b.get_beatmapId() == beatmap).count() > 0 ? true : false;
+	}
+	
+	public static User getUserListByUserID(Long userID) {
+		if(isUserContain(userID)) {
+			User user = userListCache.keySet().stream().filter(u -> u.get_userId() == userID).findFirst().get();
+			return user;
+		}
+		return null;
+	}
+	
+	public static Beatmap getBeatmapListByBeatmapID(Long beatmapID) {
+		if(isBeatmapContain(beatmapID)) {
+			Beatmap beatmap = beatmapListCache.keySet().stream().filter(b -> b.get_beatmapId() == beatmapID).findFirst().get();
+			return beatmap;
+		}
+		return null;
+	}
 }

@@ -7,26 +7,10 @@ import com.tilundev.ocapi.util.ModsUtil;
 import com.tilundev.ocapi.utilexcept.BadJSONDateFormatException;
 
 public class BestScore extends Score {
-	
-	private Long _beatmap_id;
-	
-	
-
-	public Long get_beatmap_id() {
-		return _beatmap_id;
-	}
-
-
-
-	public void set_beatmap_id(Long _beatmap_id) {
-		this._beatmap_id = _beatmap_id;
-	}
-
-
 
 	public BestScore(JSONObject json) throws BadJSONDateFormatException {
 		super();
-		this._beatmap_id = json.get(ScoreEnum.BEATMAP_ID.getName()) != JSONObject.NULL ? json.getLong(ScoreEnum.BEATMAP_ID.getName()) : null;
+		this.set_beatmapId(json.get(ScoreEnum.BEATMAP_ID.getName()) != JSONObject.NULL ? json.getLong(ScoreEnum.BEATMAP_ID.getName()) : null);
 		this.set_score(json.get(ScoreEnum.SCORE.getName()) != JSONObject.NULL ? json.getLong(ScoreEnum.SCORE.getName()) : null);
 		this.set_count300(json.get(ScoreEnum.COUNT_300.getName()) != JSONObject.NULL ? json.getInt(ScoreEnum.COUNT_300.getName()) : null);
 		this.set_count100(json.get(ScoreEnum.COUNT_100.getName()) != JSONObject.NULL ? json.getInt(ScoreEnum.COUNT_100.getName()) : null);

@@ -427,14 +427,16 @@ public class Request {
 			deepRequestGetBeatmap();
 			break;
 		case GET_MATCH:
+			deepRequestGetMatch();
 			break;
 		case GET_SCORE:
-			break;
-		case GET_USER:
+			deepRequestGetScore();
 			break;
 		case GET_USER_BEST:
+			deepRequestGetUserBest();
 			break;
 		case GET_USER_RECENT:
+			deepRequestGetUserRecent();
 			break;
 		default:
 			break;
@@ -456,7 +458,7 @@ public class Request {
 				this.setParameter(RequestParametersEnum.USER_ID, userID.toString())
 				.setParameter(RequestParametersEnum.USER_TYPE_DATA, "id");
 				deepStart(deepRequestEnum);
-			} catch (BadInitException | NoRequiredParameterFoundException | BadRequestException e) {
+			} catch (Exception e) {
 				// TODO Change This
 				e.printStackTrace();
 			}
@@ -488,7 +490,7 @@ public class Request {
 					this.setParameter(RequestParametersEnum.USER_ID, userID.toString())
 					.setParameter(RequestParametersEnum.USER_TYPE_DATA, "id");
 					deepStart(deepRequestEnum);
-				} catch (BadInitException | NoRequiredParameterFoundException | BadRequestException e) {
+				} catch (Exception e) {
 					// TODO Change This
 					e.printStackTrace();
 				}
@@ -498,7 +500,7 @@ public class Request {
 				try {
 					this.setParameter(RequestParametersEnum.BEATMAP_ID, beatmapID.toString());
 					deepStart(deepRequestEnum);
-				} catch (BadInitException | NoRequiredParameterFoundException | BadRequestException e) {
+				} catch (Exception e) {
 					// TODO Change This
 					e.printStackTrace();
 				}
@@ -511,7 +513,139 @@ public class Request {
 		}
 	}
 	
-	private Request deepStart(RequestEnum re) throws BadInitException, NoRequiredParameterFoundException {
+	private void deepRequestGetScore() {
+		Set<Long> userList = new HashSet<Long>();
+		Set<Long> beatmapList = new HashSet<Long>();
+		try {
+			constructMatchData(_body);
+			List<Score> scoreList = this._requestData.get_scoresList();
+			for (int i = 0; i < scoreList.size(); i++) {
+				Score sc =  scoreList.get(i);
+				if(sc.get_userId() != null) {
+					userList.add(sc.get_userId());
+				}
+				if(sc.get_beatmapId() != null) {
+					beatmapList.add(sc.get_beatmapId());
+				}
+			}
+			userList.forEach(userID -> {
+				RequestEnum deepRequestEnum = RequestEnum.GET_USER;
+				try {
+					this.setParameter(RequestParametersEnum.USER_ID, userID.toString())
+					.setParameter(RequestParametersEnum.USER_TYPE_DATA, "id");
+					deepStart(deepRequestEnum);
+				} catch (Exception e) {
+					// TODO Change This
+					e.printStackTrace();
+				}
+			});
+			beatmapList.forEach(beatmapID -> {
+				RequestEnum deepRequestEnum = RequestEnum.GET_BEATMAP;
+				try {
+					this.setParameter(RequestParametersEnum.BEATMAP_ID, beatmapID.toString());
+					deepStart(deepRequestEnum);
+				} catch (Exception e) {
+					// TODO Change This
+					e.printStackTrace();
+				}
+			});
+			
+		} catch (JSONException | BadJSONDateFormatException | NoModFoundException | NoScoringTypeFoundException
+				| NoTeamTypeFoundException e) {
+			// TODO CHANGE THIS !!!
+			e.printStackTrace();
+		}
+	}
+	
+	private void deepRequestGetUserBest() {
+		Set<Long> userList = new HashSet<Long>();
+		Set<Long> beatmapList = new HashSet<Long>();
+		try {
+			constructMatchData(_body);
+			List<BestScore> scoreList = this._requestData.get_bestScoresList();
+			for (int i = 0; i < scoreList.size(); i++) {
+				BestScore sc =  scoreList.get(i);
+				if(sc.get_userId() != null) {
+					userList.add(sc.get_userId());
+				}
+				if(sc.get_beatmapId() != null) {
+					beatmapList.add(sc.get_beatmapId());
+				}
+			}
+			userList.forEach(userID -> {
+				RequestEnum deepRequestEnum = RequestEnum.GET_USER;
+				try {
+					this.setParameter(RequestParametersEnum.USER_ID, userID.toString())
+					.setParameter(RequestParametersEnum.USER_TYPE_DATA, "id");
+					deepStart(deepRequestEnum);
+				} catch (Exception e) {
+					// TODO Change This
+					e.printStackTrace();
+				}
+			});
+			beatmapList.forEach(beatmapID -> {
+				RequestEnum deepRequestEnum = RequestEnum.GET_BEATMAP;
+				try {
+					this.setParameter(RequestParametersEnum.BEATMAP_ID, beatmapID.toString());
+					deepStart(deepRequestEnum);
+				} catch (Exception e) {
+					// TODO Change This
+					e.printStackTrace();
+				}
+			});
+			
+		} catch (JSONException | BadJSONDateFormatException | NoModFoundException | NoScoringTypeFoundException
+				| NoTeamTypeFoundException e) {
+			// TODO CHANGE THIS !!!
+			e.printStackTrace();
+		}
+	}
+	
+	private void deepRequestGetUserRecent() {
+		Set<Long> userList = new HashSet<Long>();
+		Set<Long> beatmapList = new HashSet<Long>();
+		try {
+			constructMatchData(_body);
+			List<RecentScore> scoreList = this._requestData.get_recentScoresList();
+			for (int i = 0; i < scoreList.size(); i++) {
+				RecentScore sc =  scoreList.get(i);
+				if(sc.get_userId() != null) {
+					userList.add(sc.get_userId());
+				}
+				if(sc.get_beatmapId() != null) {
+					beatmapList.add(sc.get_beatmapId());
+				}
+			}
+			userList.forEach(userID -> {
+				RequestEnum deepRequestEnum = RequestEnum.GET_USER;
+				try {
+					this.setParameter(RequestParametersEnum.USER_ID, userID.toString())
+					.setParameter(RequestParametersEnum.USER_TYPE_DATA, "id");
+					deepStart(deepRequestEnum);
+				} catch (Exception e) {
+					// TODO Change This
+					e.printStackTrace();
+				}
+			});
+			beatmapList.forEach(beatmapID -> {
+				RequestEnum deepRequestEnum = RequestEnum.GET_BEATMAP;
+				try {
+					this.setParameter(RequestParametersEnum.BEATMAP_ID, beatmapID.toString());
+					deepStart(deepRequestEnum);
+				} catch (Exception e) {
+					// TODO Change This
+					e.printStackTrace();
+				}
+			});
+			
+		} catch (JSONException | BadJSONDateFormatException | NoModFoundException | NoScoringTypeFoundException
+				| NoTeamTypeFoundException e) {
+			// TODO CHANGE THIS !!!
+			e.printStackTrace();
+		}
+	}
+	
+	private Request deepStart(RequestEnum re) throws Exception {
 		deepInit(re);
 		if(this._init) {
 			Map<String,Object> map = constructParameters();
@@ -522,8 +656,9 @@ public class Request {
 								.queryString(map)
 								.asJson();
 						this._deepBody.add(res.getBody()); 
-					} catch (UnirestException e) {
-						e.printStackTrace();
+						this.constructDeepData(res.getBody());
+					} catch (UnirestException | JSONException | BadJSONDateFormatException | NoApprouvedFoundException | NoGenreFoundException | NoLanguageFoundException | NoModFoundException | NoScoringTypeFoundException | NoTeamTypeFoundException e) {
+						throw e;
 					}
 				return this;
 			} else {
@@ -690,6 +825,19 @@ public class Request {
 		}
 	}
 	
+	private void constructDeepData(JsonNode node) throws JSONException, BadJSONDateFormatException, NoApprouvedFoundException, NoGenreFoundException, NoLanguageFoundException, NoModFoundException, NoScoringTypeFoundException, NoTeamTypeFoundException {
+		switch (this._request) {
+		case GET_BEATMAP:
+			constructDeepBeatmapData(node);
+			break;
+		case GET_USER:
+			constructDeepUserData(node);
+			break;
+		default:
+			break;
+		}
+	}
+	
 	private void constructBeatmapData(JsonNode node) throws JSONException, BadJSONDateFormatException, NoApprouvedFoundException, NoGenreFoundException, NoLanguageFoundException, NoModFoundException {
 		JSONArray jsonArr = node.getArray();
 		for (int i = 0; i < jsonArr.length(); i++) {
@@ -720,12 +868,24 @@ public class Request {
 		}
 	}
 	
+	private void constructDeepUserData(JsonNode node) throws JSONException, BadJSONDateFormatException, NoApprouvedFoundException, NoGenreFoundException, NoLanguageFoundException, NoModFoundException {
+		JSONArray jsonArr = node.getArray();
+		for (int i = 0; i < jsonArr.length(); i++) {
+			JSONObject json = jsonArr.getJSONObject(i);
+			if(json != null) {
+				Cache.addUserInCache(new User(json));
+			}
+		}
+	}
+	
 	private void constructScoreData(JsonNode node) throws BadJSONDateFormatException {
 		JSONArray jsonArr = node.getArray();
 		for (int i = 0; i < jsonArr.length(); i++) {
 			JSONObject json = jsonArr.getJSONObject(i);
 			if(json != null) {
 				this._requestData.get_scoresList().add(new Score(json));
+				this._requestData.get_scoresList().get(this._requestData.get_scoresList().size()-1).set_beatmapId(Long.parseLong(this._beatmapID));
+				
 			}
 		}
 	}

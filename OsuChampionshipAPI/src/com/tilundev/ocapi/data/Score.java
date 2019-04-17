@@ -14,6 +14,7 @@ public class Score {
 	private Long _score;
 	private String _username;
 	private Long _userId;
+	private Long _beatmapId;
 	private int _count300;
 	private int _count100;
 	private int _count50;
@@ -41,6 +42,9 @@ public class Score {
 	}
 	public Long get_userId() {
 		return _userId;
+	}
+	public Long get_beatmapId() {
+		return _beatmapId;
 	}
 	public int get_count300() {
 		return _count300;
@@ -98,6 +102,9 @@ public class Score {
 	}
 	public void set_userId(Long _userId) {
 		this._userId = _userId;
+	}
+	public void set_beatmapId(Long _beatmapId) {
+		this._beatmapId = _beatmapId;
 	}
 	public void set_count300(int _count300) {
 		this._count300 = _count300;
