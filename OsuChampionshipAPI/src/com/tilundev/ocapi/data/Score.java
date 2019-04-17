@@ -28,6 +28,8 @@ public class Score {
 	private String _rank;
 	private Double _pp;
 	private boolean _replayAvailable;
+	private User _user;
+	private Beatmap _beatmap;
 	
 	
 	/*                      GETTER                      */ 
@@ -85,10 +87,17 @@ public class Score {
 	public boolean is_replayAvailable() {
 		return _replayAvailable;
 	}
+	public User get_user() {
+		return _user;
+	}
+	public Beatmap get_beatmap() {
+		return _beatmap;
+	}
 	
 	
 
 	/*                      SETTER                      */ 
+	
 	
 	
 	public void set_scoreId(Long _scoreId) {
@@ -144,6 +153,12 @@ public class Score {
 	}
 	public void set_replayAvailable(boolean _replayAvailable) {
 		this._replayAvailable = _replayAvailable;
+	}
+	public void set_user(User _user) {
+		this._user = _user;
+	}
+	public void set_beatmap(Beatmap _beatmap) {
+		this._beatmap = _beatmap;
 	}
 	
 	/**

@@ -26,6 +26,7 @@ public class Game {
 	private TeamTypeEnum _teamType;
 	private List<ModsEnum> _modsList;
 	private List<ScoreMultiplayer> _scoreList;
+	private Beatmap _beatmap;
 	
 	
 	public Long get_gameId() {
@@ -58,7 +59,9 @@ public class Game {
 	public List<ScoreMultiplayer> get_scoreList() {
 		return _scoreList;
 	}
-	
+	public Beatmap get_beatmap(){
+		return this._beatmap;
+	}
 	
 	public void set_gameId(Long _gameId) {
 		this._gameId = _gameId;
@@ -90,6 +93,9 @@ public class Game {
 	public void set_scoreList(List<ScoreMultiplayer> _scoreList) {
 		this._scoreList = _scoreList;
 	}
+	public void set_beatmap(Beatmap beatmap){
+		this._beatmap = beatmap;
+	}
 	
 	
 	public Game() {
@@ -112,6 +118,7 @@ public class Game {
 			for (int i = 0; i < scoreArray.length(); i++) {
 				JSONObject jsonScore = scoreArray.getJSONObject(i);
 				this._scoreList.add(new ScoreMultiplayer(jsonScore));
+				this._scoreList.get(this.get_scoreList().size()-1).set_beatmapId(this._beatmapId);
 			}
 		}
 	}

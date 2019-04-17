@@ -1,5 +1,6 @@
 package com.tilundev.ocapi.external;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -61,9 +62,11 @@ public class Request {
 	private boolean _deepRequest = false;
 	private RequestEnum _request = null;
 	private JsonNode _body = null;
-	private List<JsonNode> _deepBody = null;
+	private List<JsonNode> _deepBody = new ArrayList<JsonNode>();
 	
 	private ResultRequestData _requestData = new ResultRequestData();
+	
+	private int nbReq = 0;
 	
 	public Request() {
 		// TODO Auto-generated constructor stub
@@ -293,6 +296,7 @@ public class Request {
 								.asJson();
 						this._body = res.getBody();
 						handleDeepRequest();
+						finalizeDataWithCache();
 					} catch (UnirestException e) {
 						throw e;
 					}
@@ -323,6 +327,10 @@ public class Request {
 		return this._requestData;
 	}
 	
+	public Request deepRequestActive() {
+		this._deepRequest = true;
+		return this;
+	}
 	
 	
 	// Private methods
@@ -454,13 +462,16 @@ public class Request {
 		}
 		userList.forEach(userID -> {
 			RequestEnum deepRequestEnum = RequestEnum.GET_USER;
-			try {
-				this.setParameter(RequestParametersEnum.USER_ID, userID.toString())
-				.setParameter(RequestParametersEnum.USER_TYPE_DATA, "id");
-				deepStart(deepRequestEnum);
-			} catch (Exception e) {
-				// TODO Change This
-				e.printStackTrace();
+			deepInit(deepRequestEnum);
+			if(!Cache.isUserContain(userID)) {
+				try {
+					this.setParameter(RequestParametersEnum.USER_ID, userID.toString())
+					.setParameter(RequestParametersEnum.USER_TYPE_DATA, "id");
+					deepStart(deepRequestEnum);
+				} catch (Exception e) {
+					// TODO Change This
+					e.printStackTrace();
+				}
 			}
 		});
 	}
@@ -468,6 +479,7 @@ public class Request {
 	private void deepRequestGetMatch() {
 		Set<Long> userList = new HashSet<Long>();
 		Set<Long> beatmapList = new HashSet<Long>();
+		int reqTotal;
 		try {
 			constructMatchData(_body);
 			List<MultiplayerGame> mpList = this._requestData.get_multiplayerGamesList();
@@ -484,25 +496,38 @@ public class Request {
 					}
 				}
 			}
+			reqTotal = userList.size() + beatmapList.size();
 			userList.forEach(userID -> {
 				RequestEnum deepRequestEnum = RequestEnum.GET_USER;
-				try {
-					this.setParameter(RequestParametersEnum.USER_ID, userID.toString())
-					.setParameter(RequestParametersEnum.USER_TYPE_DATA, "id");
-					deepStart(deepRequestEnum);
-				} catch (Exception e) {
-					// TODO Change This
-					e.printStackTrace();
+				deepInit(deepRequestEnum);
+
+				if(!Cache.isUserContain(userID)) {
+					try {
+						this.setParameter(RequestParametersEnum.USER_ID, userID.toString())
+						.setParameter(RequestParametersEnum.USER_TYPE_DATA, "id");
+						deepStart(deepRequestEnum);
+						nbReq ++;
+						System.out.println("REQUETE : " + nbReq + " / " + reqTotal);
+					} catch (Exception e) {
+						// TODO Change This
+						e.printStackTrace();
+					}
 				}
 			});
 			beatmapList.forEach(beatmapID -> {
 				RequestEnum deepRequestEnum = RequestEnum.GET_BEATMAP;
-				try {
-					this.setParameter(RequestParametersEnum.BEATMAP_ID, beatmapID.toString());
-					deepStart(deepRequestEnum);
-				} catch (Exception e) {
-					// TODO Change This
-					e.printStackTrace();
+				deepInit(deepRequestEnum);
+
+				if(!Cache.isBeatmapContain(beatmapID)) {
+					try {
+						this.setParameter(RequestParametersEnum.BEATMAP_ID, beatmapID.toString());
+						deepStart(deepRequestEnum);
+						nbReq ++;
+						System.out.println("REQUETE : " + nbReq + " / " + reqTotal);
+					} catch (Exception e) {
+						// TODO Change This
+						e.printStackTrace();
+					}
 				}
 			});
 			
@@ -530,23 +555,29 @@ public class Request {
 			}
 			userList.forEach(userID -> {
 				RequestEnum deepRequestEnum = RequestEnum.GET_USER;
-				try {
-					this.setParameter(RequestParametersEnum.USER_ID, userID.toString())
-					.setParameter(RequestParametersEnum.USER_TYPE_DATA, "id");
-					deepStart(deepRequestEnum);
-				} catch (Exception e) {
-					// TODO Change This
-					e.printStackTrace();
+				deepInit(deepRequestEnum);
+				if(!Cache.isUserContain(userID)) {
+					try {
+						this.setParameter(RequestParametersEnum.USER_ID, userID.toString())
+						.setParameter(RequestParametersEnum.USER_TYPE_DATA, "id");
+						deepStart(deepRequestEnum);
+					} catch (Exception e) {
+						// TODO Change This
+						e.printStackTrace();
+					}
 				}
 			});
 			beatmapList.forEach(beatmapID -> {
 				RequestEnum deepRequestEnum = RequestEnum.GET_BEATMAP;
-				try {
-					this.setParameter(RequestParametersEnum.BEATMAP_ID, beatmapID.toString());
-					deepStart(deepRequestEnum);
-				} catch (Exception e) {
-					// TODO Change This
-					e.printStackTrace();
+				deepInit(deepRequestEnum);
+				if(!Cache.isBeatmapContain(beatmapID)) {
+					try {
+						this.setParameter(RequestParametersEnum.BEATMAP_ID, beatmapID.toString());
+						deepStart(deepRequestEnum);
+					} catch (Exception e) {
+						// TODO Change This
+						e.printStackTrace();
+					}
 				}
 			});
 			
@@ -574,23 +605,29 @@ public class Request {
 			}
 			userList.forEach(userID -> {
 				RequestEnum deepRequestEnum = RequestEnum.GET_USER;
-				try {
-					this.setParameter(RequestParametersEnum.USER_ID, userID.toString())
-					.setParameter(RequestParametersEnum.USER_TYPE_DATA, "id");
-					deepStart(deepRequestEnum);
-				} catch (Exception e) {
-					// TODO Change This
-					e.printStackTrace();
+				deepInit(deepRequestEnum);
+				if(!Cache.isUserContain(userID)) {
+					try {
+						this.setParameter(RequestParametersEnum.USER_ID, userID.toString())
+						.setParameter(RequestParametersEnum.USER_TYPE_DATA, "id");
+						deepStart(deepRequestEnum);
+					} catch (Exception e) {
+						// TODO Change This
+						e.printStackTrace();
+					}
 				}
 			});
 			beatmapList.forEach(beatmapID -> {
 				RequestEnum deepRequestEnum = RequestEnum.GET_BEATMAP;
-				try {
-					this.setParameter(RequestParametersEnum.BEATMAP_ID, beatmapID.toString());
-					deepStart(deepRequestEnum);
-				} catch (Exception e) {
-					// TODO Change This
-					e.printStackTrace();
+				deepInit(deepRequestEnum);
+				if(!Cache.isBeatmapContain(beatmapID)) {
+					try {
+						this.setParameter(RequestParametersEnum.BEATMAP_ID, beatmapID.toString());
+						deepStart(deepRequestEnum);
+					} catch (Exception e) {
+						// TODO Change This
+						e.printStackTrace();
+					}
 				}
 			});
 			
@@ -618,23 +655,29 @@ public class Request {
 			}
 			userList.forEach(userID -> {
 				RequestEnum deepRequestEnum = RequestEnum.GET_USER;
-				try {
-					this.setParameter(RequestParametersEnum.USER_ID, userID.toString())
-					.setParameter(RequestParametersEnum.USER_TYPE_DATA, "id");
-					deepStart(deepRequestEnum);
-				} catch (Exception e) {
-					// TODO Change This
-					e.printStackTrace();
+				deepInit(deepRequestEnum);
+				if(!Cache.isUserContain(userID)) {
+					try {
+						this.setParameter(RequestParametersEnum.USER_ID, userID.toString())
+						.setParameter(RequestParametersEnum.USER_TYPE_DATA, "id");
+						deepStart(deepRequestEnum);
+					} catch (Exception e) {
+						// TODO Change This
+						e.printStackTrace();
+					}
 				}
 			});
 			beatmapList.forEach(beatmapID -> {
 				RequestEnum deepRequestEnum = RequestEnum.GET_BEATMAP;
-				try {
-					this.setParameter(RequestParametersEnum.BEATMAP_ID, beatmapID.toString());
-					deepStart(deepRequestEnum);
-				} catch (Exception e) {
-					// TODO Change This
-					e.printStackTrace();
+				deepInit(deepRequestEnum);
+				if(!Cache.isBeatmapContain(beatmapID)) {
+					try {
+						this.setParameter(RequestParametersEnum.BEATMAP_ID, beatmapID.toString());
+						deepStart(deepRequestEnum);
+					} catch (Exception e) {
+						// TODO Change This
+						e.printStackTrace();
+					}
 				}
 			});
 			
@@ -646,7 +689,6 @@ public class Request {
 	}
 	
 	private Request deepStart(RequestEnum re) throws Exception {
-		deepInit(re);
 		if(this._init) {
 			Map<String,Object> map = constructParameters();
 			if(requiredParamater()) {
@@ -913,5 +955,68 @@ public class Request {
 	private void constructMatchData(JsonNode node) throws JSONException, BadJSONDateFormatException, NoModFoundException, NoScoringTypeFoundException, NoTeamTypeFoundException {
 		JSONObject json = node.getObject();
 		this._requestData.get_multiplayerGamesList().add(new MultiplayerGame(json));
+	}
+	
+	private void finalizeDataWithCache() {
+		List<Beatmap> beatmapList = this._requestData.get_beatmapsList();
+		List<BestScore> bestScoreList = this._requestData.get_bestScoresList();
+		List<MultiplayerGame> multiplayerGameList = this._requestData.get_multiplayerGamesList();
+		List<RecentScore> recentScoreList = this._requestData.get_recentScoresList();
+		List<Score> scoreList = this._requestData.get_scoresList();
+		if(beatmapList != null && !beatmapList.isEmpty()) {
+			beatmapList.forEach(beatmap -> {
+				if(beatmap.get_user() == null) {
+					beatmap.set_user(Cache.getUserListByUserID(beatmap.get_creatorId()));
+				}
+			});
+		}
+		if(bestScoreList != null && !bestScoreList.isEmpty()) {
+			bestScoreList.forEach( bestScore -> {
+				if(bestScore.get_beatmap() == null) {
+					bestScore.set_beatmap(Cache.getBeatmapListByBeatmapID(bestScore.get_beatmapId()));
+				}
+				if(bestScore.get_user() == null) {
+					bestScore.set_user(Cache.getUserListByUserID(bestScore.get_userId()));
+				}
+			});
+		}
+		if(multiplayerGameList != null && !multiplayerGameList.isEmpty()) {
+			multiplayerGameList.forEach( multiplayerGame -> {
+				multiplayerGame.get_gameList().forEach( game -> {
+					if(game.get_beatmap() == null) {
+						game.set_beatmap(Cache.getBeatmapListByBeatmapID(game.get_beatmapId()));
+					}
+					Beatmap beatmapCache = game.get_beatmap();
+					game.get_scoreList().forEach( scoreMulti -> {
+						if(scoreMulti.get_beatmap() == null) {
+							scoreMulti.set_beatmap(beatmapCache);
+						}
+						if(scoreMulti.get_user() == null) {
+							scoreMulti.set_user(Cache.getUserListByUserID(scoreMulti.get_userId()));
+						}
+					});
+				});
+			});
+		}
+		if(recentScoreList != null && !recentScoreList.isEmpty()) {
+			recentScoreList.forEach(recentScore -> {
+				if(recentScore.get_beatmap() == null) {
+					recentScore.set_beatmap(Cache.getBeatmapListByBeatmapID(recentScore.get_beatmapId()));
+				}
+				if(recentScore.get_user() == null) {
+					recentScore.set_user(Cache.getUserListByUserID(recentScore.get_userId()));
+				}
+			});
+		}
+		if(scoreList != null && !scoreList.isEmpty()) {
+			scoreList.forEach( score -> {
+				if(score.get_beatmap() == null) {
+					score.set_beatmap(Cache.getBeatmapListByBeatmapID(score.get_beatmapId()));
+				}
+				if(score.get_user() == null) {
+					score.set_user(Cache.getUserListByUserID(score.get_userId()));
+				}
+			});
+		}
 	}
 }

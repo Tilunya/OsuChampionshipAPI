@@ -53,4 +53,53 @@ public class ResultRequestData {
 		
 	}
 	
+	public Beatmap getBeatmapInBeatmapListByID(Long beatmapID) {
+		return this._beatmapsList.stream().filter(beatmap -> beatmap.get_beatmapId() == beatmapID).findFirst().get();
+	}
+	
+	public User getUserInUserListByID(Long userID) {
+		return this._usersList.stream().filter(user -> user.get_userId() == userID).findFirst().get();
+	}
+	
+	public Score getScoreInScoreListByID(Long userID, Long beatmapID) {
+		return this._scoresList.stream().filter(score -> score.get_userId() == userID && score.get_beatmapId() == beatmapID).findFirst().get();
+	}
+	
+	public BestScore getBestScoreInBestScoreListByDoubleID(Long userID, Long beatmapID) {
+		return this._bestScoresList.stream().filter(bestScore -> bestScore.get_userId() == userID && bestScore.get_beatmapId() == beatmapID).findFirst().get();
+	}
+	
+	public RecentScore getRecentScoreInRecentScoreListByDoubleID(Long userID, Long beatmapID) {
+		return this._recentScoresList.stream().filter(recentScore -> recentScore.get_userId() == userID && recentScore.get_beatmapId() == beatmapID).findFirst().get();
+	}
+	
+	public Game getGameInMultiplayerGamesListByBeatmapID(Long beatmapID) {
+		for (int i = 0; i < this._multiplayerGamesList.size(); i++) {
+			MultiplayerGame m = this._multiplayerGamesList.get(i);
+			for (int j = 0; j < m.get_gameList().size(); j++) {
+				Game g = m.get_gameList().get(j);
+				if(g.get_beatmapId() == beatmapID) {
+					return g;
+				}
+			}
+		}
+		return null;
+	}
+	
+	public ScoreMultiplayer getScoreMultiplayerInMultiplayerGamesListByDoubleID(Long beatmapID, Long userID) {
+		for (int i = 0; i < this._multiplayerGamesList.size(); i++) {
+			MultiplayerGame m = this._multiplayerGamesList.get(i);
+			for (int j = 0; j < m.get_gameList().size(); j++) {
+				Game g = m.get_gameList().get(j);
+				for (int k = 0; k < g.get_scoreList().size(); k++) {
+					ScoreMultiplayer sm = g.get_scoreList().get(k);
+					if(sm.get_beatmapId() == beatmapID && sm.get_userId() == userID) {
+						return sm;
+					}
+				}
+			}
+		}
+		return null;
+	}
+	
 }

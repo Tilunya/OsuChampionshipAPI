@@ -31,7 +31,8 @@ public class Test {
 		Config.initConfig();
 		Request br = new Request();
 		br.setRequest(RequestEnum.GET_MATCH)
-			.setParameter(RequestParametersEnum.MATCH_ID, "50963890");
+			.setParameter(RequestParametersEnum.MATCH_ID, "51081665")
+			.deepRequestActive(); // Room Multi
 		try {
 			br.start();
 			ResultRequestData rrd = br.getConstructData();

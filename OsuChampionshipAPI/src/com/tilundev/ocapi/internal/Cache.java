@@ -1,14 +1,15 @@
 package com.tilundev.ocapi.internal;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import com.tilundev.ocapi.data.Beatmap;
 import com.tilundev.ocapi.data.User;
 
-public class Cache {
-	private static Map<User,Date> userListCache;
-	private static Map<Beatmap,Date> beatmapListCache;
+public class Cache { // PB NIVEAU CACHE GET
+	private static Map<User,Date> userListCache = new HashMap<User, Date>();
+	private static Map<Beatmap,Date> beatmapListCache = new HashMap<Beatmap, Date>();
 	
 	
 	public static Map<User,Date> getUserListCache() {

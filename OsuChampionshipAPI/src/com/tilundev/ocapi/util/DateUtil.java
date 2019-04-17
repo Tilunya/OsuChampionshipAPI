@@ -5,7 +5,6 @@ import java.util.GregorianCalendar;
 
 import org.json.JSONObject;
 
-import com.google.gson.JsonNull;
 import com.tilundev.ocapi.utilexcept.BadJSONDateFormatException;
 
 public class DateUtil {
@@ -45,7 +44,7 @@ public class DateUtil {
 				int year = Integer.parseInt(dateArray[0]);
 				int month = Integer.parseInt(dateArray[1]);
 				int date = Integer.parseInt(dateArray[2]);
-				if(month < 1 && month > 12 && date <1 && date > 31) {
+				if(month < 1 && month > 12 && date <1 && date > 31 && year > 0 ) {
 					return true;
 				}
 			}catch (Exception e) {

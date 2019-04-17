@@ -6,7 +6,7 @@ import com.tilundev.ocapi.util.DateUtil;
 import com.tilundev.ocapi.util.ModsUtil;
 import com.tilundev.ocapi.utilexcept.BadJSONDateFormatException;
 
-public class RecentScore extends BestScore {
+public class RecentScore extends Score {
 
 	public RecentScore(JSONObject json) throws BadJSONDateFormatException {
 		super();
