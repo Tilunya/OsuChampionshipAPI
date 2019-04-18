@@ -213,8 +213,12 @@ public class User {
 		}
 	}
 	
+	public boolean equals(Long userID) {
+		return this._userId.equals(userID);
+	}
+	
 	public boolean equals(User user) {
-		return this._userId == user._userId;
+		return equals(user.get_userId());
 	}
 	
 	public boolean equals(Object user) {

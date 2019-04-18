@@ -290,7 +290,7 @@ public class Beatmap {
 	 * 
 	 */
 	public Beatmap() {
-		//TODO [FR] Faire ça!
+		//TODO [FR] Faire ï¿½a!
 	}
 	
 	/**
@@ -333,5 +333,21 @@ public class Beatmap {
 		this._maxCombo = json.get(BeatmapEnum.MAX_COMBO.getName()) != JSONObject.NULL ? json.getLong(BeatmapEnum.MAX_COMBO.getName()) : null;
 	}
 	
+	public boolean equals(Long beatmapID) {
+		return this._beatmapId.equals(beatmapID);
+	}
+	
+	public boolean equals(Beatmap beatmap) {
+		return equals(beatmap.get_beatmapId());
+	}
+	
+	public boolean equals(Object beatmap) {
+		if(beatmap.getClass() == Beatmap.class) {
+			return equals((Beatmap)beatmap);
+		} else {
+			return super.equals(beatmap);
+		}
+		
+	}
 	
 }

@@ -27,33 +27,38 @@ import com.tilundev.ocapi.utilexcept.NoModFoundException;
 public class Test {
 
 	public static void main(String[] args) throws JSONException, BadJSONDateFormatException, NoApprouvedFoundException, NoGenreFoundException, NoLanguageFoundException, NoModFoundException, BadRequestException {
-		// TODO Auto-generated method stub
-		Config.initConfig();
-		Request br = new Request();
-		br.setRequest(RequestEnum.GET_MATCH)
-			.setParameter(RequestParametersEnum.MATCH_ID, "51081665")
-			.deepRequestActive(); // Room Multi
-		try {
-			br.start();
-			ResultRequestData rrd = br.getConstructData();
-			MultiplayerGame mpg = rrd.get_multiplayerGamesList().get(0);
-			Match m = mpg.get_match();
-			List<Game> li = mpg.get_gameList();
-			System.out.println("Room " + m.get_name() + " For " + li.size() + " Games");
-			for (int j = 0; j < li.size(); j++) {
-				Game g = li.get(j);
-				System.out.println("Beatmap Id :" + g.get_beatmapId() + " Start at : " + g.get_startTime().toString());
-				if(g.get_scoreList() != null) {
-					for (int i = 0; i < g.get_scoreList().size(); i++) {
-						System.out.println( (i+1) +" : " + g.get_scoreList().get(i).get_userId());
+		
+		boolean isConfig = false;
+		if(isConfig) {
+			Config.saveConfig();
+		} else {
+			Config.initConfig();
+			Request br = new Request();
+			br.setRequest(RequestEnum.GET_MATCH)
+				.setParameter(RequestParametersEnum.MATCH_ID, "51092401")
+				.deepRequestActive(); // Room Multi
+			try {
+				br.start();
+				ResultRequestData rrd = br.getConstructData();
+				MultiplayerGame mpg = rrd.get_multiplayerGamesList().get(0);
+				Match m = mpg.get_match();
+				List<Game> li = mpg.get_gameList();
+				System.out.println("Room " + m.get_name() + " For " + li.size() + " Games");
+				for (int j = 0; j < li.size(); j++) {
+					Game g = li.get(j);
+					System.out.println("Beatmap Id :" + g.get_beatmapId() + "("+ (g.get_beatmap()!=null ? g.get_beatmap().get_title() : "null") +") Start at : " + g.get_startTime().toString());
+					if(g.get_scoreList() != null) {
+						for (int i = 0; i < g.get_scoreList().size(); i++) {
+							System.out.println( (i+1) +" : " + g.get_scoreList().get(i).get_userId() +" (" + (g.get_scoreList().get(i).get_user() != null ? g.get_scoreList().get(i).get_user().get_username() : "null") +")");
+						}
 					}
 				}
 			}
-		}
-		catch (Exception e) {
-			System.out.println("OSKUR JE SUIS CASSE");
-			System.out.println(e.getMessage());
-			e.printStackTrace();
+			catch (Exception e) {
+				System.out.println("OSKUR JE SUIS CASSE");
+				System.out.println(e.getMessage());
+				e.printStackTrace();
+			}
 		}
 	}
 

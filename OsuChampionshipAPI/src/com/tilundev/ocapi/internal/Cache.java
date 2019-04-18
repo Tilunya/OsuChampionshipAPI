@@ -38,7 +38,7 @@ public class Cache { // PB NIVEAU CACHE GET
 	}
 	
 	public static boolean isUserContain(Long user) {
-		return userListCache.keySet().stream().filter(u -> u.get_userId() == user).count() > 0 ? true : false;
+		return userListCache.keySet().stream().filter((u) -> user.equals(u.get_userId())).findAny().orElse(null) == null ? false : true;
 	}
 	
 	public static boolean isBeatmapContain(Beatmap beatmap) {
@@ -46,21 +46,19 @@ public class Cache { // PB NIVEAU CACHE GET
 	}
 	
 	public static boolean isBeatmapContain(Long beatmap) {
-		return beatmapListCache.keySet().stream().filter(b -> b.get_beatmapId() == beatmap).count() > 0 ? true : false;
+		return beatmapListCache.keySet().stream().filter((b) -> b.equals(beatmap)).findAny().orElse(null) == null ? false : true;
 	}
 	
 	public static User getUserListByUserID(Long userID) {
 		if(isUserContain(userID)) {
-			User user = userListCache.keySet().stream().filter(u -> u.get_userId() == userID).findFirst().get();
-			return user;
+			return userListCache.keySet().stream().filter((u) -> userID.equals(u.get_userId())).findAny().orElse(null);
 		}
 		return null;
 	}
 	
 	public static Beatmap getBeatmapListByBeatmapID(Long beatmapID) {
 		if(isBeatmapContain(beatmapID)) {
-			Beatmap beatmap = beatmapListCache.keySet().stream().filter(b -> b.get_beatmapId() == beatmapID).findFirst().get();
-			return beatmap;
+			return beatmapListCache.keySet().stream().filter((b) -> beatmapID.equals(b.get_beatmapId())).findAny().orElse(null);
 		}
 		return null;
 	}

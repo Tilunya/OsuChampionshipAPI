@@ -54,23 +54,23 @@ public class ResultRequestData {
 	}
 	
 	public Beatmap getBeatmapInBeatmapListByID(Long beatmapID) {
-		return this._beatmapsList.stream().filter(beatmap -> beatmap.get_beatmapId() == beatmapID).findFirst().get();
+		return this._beatmapsList.stream().filter(beatmap -> beatmap.get_beatmapId() == beatmapID).findAny().orElse(null);
 	}
 	
 	public User getUserInUserListByID(Long userID) {
-		return this._usersList.stream().filter(user -> user.get_userId() == userID).findFirst().get();
+		return this._usersList.stream().filter(user -> user.get_userId() == userID).findAny().orElse(null);
 	}
 	
 	public Score getScoreInScoreListByID(Long userID, Long beatmapID) {
-		return this._scoresList.stream().filter(score -> score.get_userId() == userID && score.get_beatmapId() == beatmapID).findFirst().get();
+		return this._scoresList.stream().filter(score -> score.get_userId() == userID && score.get_beatmapId() == beatmapID).findAny().orElse(null);
 	}
 	
 	public BestScore getBestScoreInBestScoreListByDoubleID(Long userID, Long beatmapID) {
-		return this._bestScoresList.stream().filter(bestScore -> bestScore.get_userId() == userID && bestScore.get_beatmapId() == beatmapID).findFirst().get();
+		return this._bestScoresList.stream().filter(bestScore -> bestScore.get_userId() == userID && bestScore.get_beatmapId() == beatmapID).findAny().orElse(null);
 	}
 	
 	public RecentScore getRecentScoreInRecentScoreListByDoubleID(Long userID, Long beatmapID) {
-		return this._recentScoresList.stream().filter(recentScore -> recentScore.get_userId() == userID && recentScore.get_beatmapId() == beatmapID).findFirst().get();
+		return this._recentScoresList.stream().filter(recentScore -> recentScore.get_userId() == userID && recentScore.get_beatmapId() == beatmapID).findAny().orElse(null);
 	}
 	
 	public Game getGameInMultiplayerGamesListByBeatmapID(Long beatmapID) {
