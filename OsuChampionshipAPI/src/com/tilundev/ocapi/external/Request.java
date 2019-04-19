@@ -69,7 +69,7 @@ public class Request {
 	private int nbReq = 0;
 	
 	public Request() {
-		// TODO Auto-generated constructor stub
+		
 	}
 	
 	
@@ -291,6 +291,7 @@ public class Request {
 					}
 				} else {
 					try {
+						Cache.clearOldCache();
 						HttpResponse<JsonNode> res = Unirest.get(adress)
 								.queryString(map)
 								.asJson();
@@ -330,6 +331,28 @@ public class Request {
 	public Request deepRequestActive() {
 		this._deepRequest = true;
 		return this;
+	}
+	
+	public void resetRequest() {
+		this._sinceDate = null;
+		this._beatmapSetID = null;
+		this._beatmapID = null;
+		this._userID = null;
+		this._typeUserID = null;
+		this._mode = null;
+		this._modeConverter = null;
+		this._beatmapHash = null;
+		this._limit = null;
+		this._eventDays = null;
+		this._mods = null;
+		this._matchID = null;
+		this._init = false;
+		this._deepRequest = false;
+		this._request = null;
+		this._body = null;
+		this._deepBody = new ArrayList<JsonNode>();
+		this._requestData = new ResultRequestData();
+		nbReq = 0;
 	}
 	
 	
@@ -450,6 +473,8 @@ public class Request {
 			break;
 		}
 	}
+	
+	
 	
 	private void deepRequestGetBeatmap() {
 		Set<Long> userList = new HashSet<Long>();
@@ -717,20 +742,7 @@ public class Request {
 		this._init = true;
 	}
 	
-	private void resetParameters() {
-		this._sinceDate = null;
-		this._beatmapSetID = null;
-		this._beatmapID = null;
-		this._userID = null;
-		this._typeUserID = null;
-		this._mode = null;
-		this._modeConverter = null;
-		this._beatmapHash = null;
-		this._limit = null;
-		this._eventDays = null;
-		this._mods = null;
-		this._matchID = null;
-	}
+	
 	
 	private Map<String,Object> constructParameters(){
 		Map<String,Object> map = new HashMap<String,Object>();
@@ -955,6 +967,21 @@ public class Request {
 	private void constructMatchData(JsonNode node) throws JSONException, BadJSONDateFormatException, NoModFoundException, NoScoringTypeFoundException, NoTeamTypeFoundException {
 		JSONObject json = node.getObject();
 		this._requestData.get_multiplayerGamesList().add(new MultiplayerGame(json));
+	}
+	
+	private void resetParameters() {
+		this._sinceDate = null;
+		this._beatmapSetID = null;
+		this._beatmapID = null;
+		this._userID = null;
+		this._typeUserID = null;
+		this._mode = null;
+		this._modeConverter = null;
+		this._beatmapHash = null;
+		this._limit = null;
+		this._eventDays = null;
+		this._mods = null;
+		this._matchID = null;
 	}
 	
 	private void finalizeDataWithCache() {

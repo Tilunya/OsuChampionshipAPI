@@ -1,18 +1,12 @@
 package com.tilundev.ocapi.external;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
-import com.mashape.unirest.http.JsonNode;
-import com.tilundev.ocapi.data.BestScore;
 import com.tilundev.ocapi.data.Game;
 import com.tilundev.ocapi.data.Match;
 import com.tilundev.ocapi.data.MultiplayerGame;
-import com.tilundev.ocapi.data.RecentScore;
 import com.tilundev.ocapi.data.ResultRequestData;
 import com.tilundev.ocapi.external.parameters.RequestParametersEnum;
 import com.tilundev.ocapi.internal.Config;
@@ -35,7 +29,7 @@ public class Test {
 			Config.initConfig();
 			Request br = new Request();
 			br.setRequest(RequestEnum.GET_MATCH)
-				.setParameter(RequestParametersEnum.MATCH_ID, "51092401")
+				.setParameter(RequestParametersEnum.MATCH_ID, "51132434")
 				.deepRequestActive(); // Room Multi
 			try {
 				br.start();
@@ -43,6 +37,32 @@ public class Test {
 				MultiplayerGame mpg = rrd.get_multiplayerGamesList().get(0);
 				Match m = mpg.get_match();
 				List<Game> li = mpg.get_gameList();
+				System.out.println("Room " + m.get_name() + " For " + li.size() + " Games");
+				for (int j = 0; j < li.size(); j++) {
+					Game g = li.get(j);
+					System.out.println("Beatmap Id :" + g.get_beatmapId() + "("+ (g.get_beatmap()!=null ? g.get_beatmap().get_title() : "null") +") Start at : " + g.get_startTime().toString());
+					if(g.get_scoreList() != null) {
+						for (int i = 0; i < g.get_scoreList().size(); i++) {
+							System.out.println( (i+1) +" : " + g.get_scoreList().get(i).get_userId() +" (" + (g.get_scoreList().get(i).get_user() != null ? g.get_scoreList().get(i).get_user().get_username() : "null") +")");
+						}
+					}
+				}
+
+				System.out.println("10 Secondes ...");
+				Thread.sleep(10000);
+				System.out.println("Reprise");
+
+				br.resetRequest();
+				br.setRequest(RequestEnum.GET_MATCH)
+					.setParameter(RequestParametersEnum.MATCH_ID, "51132434")
+					.deepRequestActive(); // Room Multi
+
+				br.start();
+				
+				rrd = br.getConstructData();
+				mpg = rrd.get_multiplayerGamesList().get(0);
+				m = mpg.get_match();
+				li = mpg.get_gameList();
 				System.out.println("Room " + m.get_name() + " For " + li.size() + " Games");
 				for (int j = 0; j < li.size(); j++) {
 					Game g = li.get(j);
